@@ -183,3 +183,62 @@ function initAppointmentsSearch() {
         showAvailableAppointments(event)
     });
 }
+
+function makeReservation(e, idPacjenta) {
+    e.preventDefault();
+    let splitID = e.target.id.split('-');
+    let ID = splitID[splitID.length-1];
+
+    let godzina = $('#rezerwuj-row-'+ID+' input[name="godzina"]').val();
+    let godzinaJS = godzina.split(':');
+    let data = $('#datefrom').datetimepicker('viewDate').format('YYYY-MM-DD');
+    let lekarz = $('#rezerwuj-row-'+ID+' input[name="lekarz"]').val();
+
+    $.ajax({
+        url: '/wizyty/zajete/data/' + data + '/godzina/' + godzina + ':00/lekarz/' + lekarz,
+        type: "GET",
+        dataType: 'json'  
+    }).done(function (check) {
+        console.log("done");
+        console.log("check: ");
+        console.log(check);
+
+        if (check[0].liczba != 0) {
+            $("#lista-wizyt").prepend("<div class=\"alert alert-primary alert-dismissable fade show\" role=\"alert\" style=\"margin-top: 30px;\"><span>Przykro nam, ale ktoś inny zdążył już zarezerwować ten termin. Prosimy wybrać inny.</span><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></div>");
+            $('#rezerwuj-row-'+ID).remove();
+            return;
+        }
+
+        let dataJS = moment(data + ' ' + godzina + ':00');
+        console.log(dataJS.toDate());
+
+        $.ajax({
+            url: "/wizyty/nowa-wizyta",
+            type: "POST",
+            data: {
+                'IDPacjenta': idPacjenta,
+                'PWZLekarza': lekarz,
+                'Data': data + ' ' + godzina + ':00',
+                'DataJS': dataJS.toDate()
+            },
+            dataType: 'json'
+        }).done(function (result) {
+            if (result) {
+                $("#lista-wizyt").html("<div class=\"alert alert-primary\" role=\"alert\" style=\"margin-top: 30px;\">Dziękujemy! Wizyta została zarezerwowana, w niedługim czasie postaramy się ją potwierdzić.</div>");
+                return;
+            }
+            
+            $("#lista-wizyt").prepend("<div class=\"alert alert-primary alert-dismissable fade show\" role=\"alert\" style=\"margin-top: 30px;\"><span>Wystąpił błąd. Prosimy spróbować ponownie za kilka minut.</span><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></div>");
+        }).fail(function(jqXHR, textStatus) {
+            console.log("fail: "+textStatus);
+        });
+    }).fail(function(jqXHR, textStatus) {
+        console.log("fail: "+textStatus);
+    });
+}
+
+function initReservations(idPacjenta) {
+    $(document).on('click', '.rezerwuj-nowa', function(e) {
+        makeReservation(e, idPacjenta);
+    });
+}

@@ -61,6 +61,22 @@ app.get('/wizyty/zajete/data/:data', async (req, res) => {
     }
 });
 
+app.get('/wizyty/zajete/data/:data/godzina/:godzina/lekarz/:lekarz', async (req, res) => {
+    try {
+        const rows = await Classes.Wizyta.sprawdzTermin(res, req.params.data, req.params.godzina, req.params.lekarz);
+    } catch (err){
+        console.error(err);
+    }
+});
+  
+app.post('/wizyty/nowa-wizyta', async (req, res) => {
+    try {
+        const rows = await Classes.Wizyta.utworzWizyte(res, req.body.IDPacjenta, req.body.PWZLekarza, req.body.Data, req.body.DataJS, "konsultacja");
+    } catch (err){
+        console.error(err);
+    }
+});
+
 app.listen(port, host, () => {
     console.log(`Running on http://${host}:${port}/`);
   });
