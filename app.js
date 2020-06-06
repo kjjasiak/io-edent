@@ -20,3 +20,7 @@ app.engine('hbs', handlebars({
 }));
 
 app.use(express.static('public'));
+
+app.listen(port, host, () => {
+    console.log(`Running on http://${host}:${port}/`);
+  });
