@@ -21,6 +21,10 @@ app.engine('hbs', handlebars({
 
 app.use(express.static('public'));
 
+app.get('/rezerwuj-wizyte', async (req, res) => {
+    res.redirect('/');
+  });
+
 app.listen(port, host, () => {
     console.log(`Running on http://${host}:${port}/`);
   });
