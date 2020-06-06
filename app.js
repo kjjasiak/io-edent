@@ -1,3 +1,7 @@
+var moment = require('moment');
+require('moment/locale/pl');
+console.log(moment.locale());
+
 const UsersClasses = require('./users-classes.js');
 const Classes = require('./classes');
 
@@ -126,4 +130,4 @@ app.get('/wizyty/wszystkie', async (req, res) => {
 
 app.listen(port, host, () => {
     console.log(`Running on http://${host}:${port}/`);
-  });
+});

@@ -1,0 +1,345 @@
+CREATE DATABASE edent;
+
+USE edent;
+
+CREATE TABLE IF NOT EXISTS Uzytkownicy(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    Login VARCHAR(30) NOT NULL,
+    Haslo VARCHAR(40) NOT NULL,
+    Email VARCHAR(50) NOT NULL,
+    Rola VARCHAR(50) NOT NULL,
+    PRIMARY KEY (ID)
+);
+
+INSERT INTO Uzytkownicy
+    (Login, Haslo, Email, Rola)
+VALUES
+    ('Smerfetka', '$smerfetka123', 'pacjent1@przyklad.com', 'pacjent'),
+    ('Papa_Smerf', 'papa123', 'pacjent2@przyklad.com', 'pacjent'),
+    ('Smerf_Maruda', 'XXmaruda123', 'lekarz1@przyklad.com', 'lekarz'),
+    ('Smerf_Osilek', '$osiłek123', 'lekarz2@przyklad.com', 'lekarz'),
+    ('Smerf_Wazniak', '@WaŻnIaK123', 'pacjent3@przyklad.com', 'pacjent'),
+    ('Smerf_Ciamajda', 'XXciamajda', 'pracownik1@przyklad.com', 'pracownik recepcji'),
+    ('Smerf_Lasuch', 'Ł@such123', 'pacjent4@przyklad.com', 'pacjent'),
+    ('Smerf_Pracus', 'PrAcUś123', 'lekarz3@przyklad.com', 'lekarz'),
+    ('Smerf_Lalus', '$lAlUś123', 'pacjent5@przyklad.com', 'pacjent'),
+    ('Smerf_Zgrywus', '@ZgRywUs123', 'pacjent6@przyklad.com', 'pacjent');
+
+CREATE TABLE IF NOT EXISTS DaneUzytkownikow(
+    IDUzytkownika INT(11) NOT NULL,
+    Imie VARCHAR(255) NOT NULL,
+    Nazwisko VARCHAR(255) NOT NULL,
+    Telefon VARCHAR(9) NOT NULL,
+    Ulica VARCHAR(255) NOT NULL,
+    NrDomuMieszkania VARCHAR(255) NOT NULL,
+    KodPocztowy VARCHAR(6) NOT NULL,
+    Miasto VARCHAR(255) NOT NULL,
+    PRIMARY KEY (IDUzytkownika),
+    FOREIGN KEY (IDUzytkownika) REFERENCES Uzytkownicy(ID)
+);
+
+INSERT INTO DaneUzytkownikow
+    (IDUzytkownika, Imie, Nazwisko, Telefon, Ulica, NrDomuMieszkania, KodPocztowy, Miasto)
+VALUES
+    (1, 'Emilia', 'Kołodziej', '882317248', 'Polna', '14/5', '70-011', 'Szczecin'),
+    (2, 'Adrian', 'Krajewski', '827382910', 'Leśna', '17', '70-025', 'Szczecin'),
+    (3, 'Zofia', 'Kowalczyk', '615923671', 'Krótka', '65', '74-100', 'Gryfino'),
+    (4, 'Patryk', 'Czajka', '792837028', 'Lipowa', '18/27', '70-238', 'Police'),
+    (5, 'Jakub', 'Bielecki', '789456722', 'Szkolna', '15', '70-010', 'Szczecin'),
+    (6, 'Bartosz', 'Dudek', '347281727', 'Łąkowa', '22', '70-238', 'Police'),
+    (7, 'Bianka', 'Nowacka', '524919638', '1-Maja', '85/5', '73-102', 'Stargard'),
+    (8, 'Kacper', 'Wójcik', '456828917', 'Sienna', '40', '74-100', 'Gryfino'),
+    (9, 'Patryk', 'Szymański', '729371839', 'Długa', '62/2', '70-031', 'Szczecin'),
+    (10, 'Natalia', 'Polak', '356828271', 'Nowa', '20/3', '70-100', 'Szczecin');
+
+CREATE TABLE IF NOT EXISTS Pacjenci(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    Pesel VARCHAR(11) NOT NULL,
+    DataUrodzenia DATE NOT NULL,
+    OddzialNFZ TINYINT(4),
+    IDUzytkownika INT(11) NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDUzytkownika) REFERENCES Uzytkownicy(ID)
+);
+
+INSERT INTO Pacjenci
+    (Pesel, DataUrodzenia, OddzialNFZ, IDUzytkownika)
+VALUES
+    ('79030104723', '1979-03-01', 16, 1),
+    ('96092435284',	'1996-09-24', 16, 2),	
+    ('6081582163', '2006-08-15', 16, 5),	
+    ('88112726196', '1988-11-27', 16, 7),	
+    ('92060388612',	'1992-06-03', 16, 9),	
+    ('73041752171',	'1973-04-17', 16, 10);
+
+CREATE TABLE IF NOT EXISTS Lekarze(
+    NumerPWZ VARCHAR(7) NOT NULL,
+    TytulNaukowy VARCHAR(255) NOT NULL,
+    Specjalnosc VARCHAR(255) NOT NULL,
+    IDUzytkownika INT(11) NOT NULL,
+    DniPrzyjec VARCHAR(255),
+    GodzinyPrzyjec VARCHAR(65535),
+    PRIMARY KEY (NumerPWZ),
+    FOREIGN KEY (IDUzytkownika) REFERENCES Uzytkownicy(ID)
+);
+
+INSERT INTO Lekarze
+    (NumerPWZ, TytulNaukowy, Specjalnosc, IDUzytkownika, DniPrzyjec, GodzinyPrzyjec)
+VALUES
+    ('7263917', 'lek. dent.', 'protetyk', 3, '1;3;5', '10-13;16-20;9-12'),				
+    ('6529362', 'lek. dent.', 'dentysta', 4, '1;2;3;5', '10-14;16-20;10-14;9-12'),
+    ('4294617', 'dr n. med.', 'dentysta',	8, '4;6', '10-18;9-13');
+
+CREATE TABLE IF NOT EXISTS PodmiotyMedyczne(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    NrWpisuRPWDL VARCHAR(12) NOT NULL,
+    Nazwa VARCHAR(255) NOT NULL,
+    Adres VARCHAR(255) NOT NULL,
+    Telefon VARCHAR(9) NOT NULL,
+    Typ VARCHAR(255),
+    PRIMARY KEY (ID)
+);
+
+INSERT INTO PodmiotyMedyczne
+    (NrWpisuRPWDL, Nazwa, Adres, Telefon, Typ)
+VALUES
+    ('000000011963', 'Medison', 'Polna, 17 70-011 Szczecin', '912751037', 'poradnia chirurgiczna'),					
+    ('000000017608', 'Pracownia diagnostyczna RTG', 'Rolna 152, 70-031 Szczecin', '915826991', 'pracownia rentgenowska'),
+    ('000000017632', 'Szpital im. Armii Krajowej', 'Arkońska 8, 70-100 Szczecin', '911572433', 'szpital'),
+    ('000000098328', 'Pro Dental', 'Kujawska 5, 70-425 Szczecin', '914268722', 'gabinet stomatologiczny');
+
+CREATE TABLE IF NOT EXISTS Wizyty(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    IDPacjenta INT(11) NOT NULL,
+    PWZLekarza VARCHAR(7) NOT NULL,
+    Data DATETIME NOT NULL,
+    Typ VARCHAR(255),
+    Status VARCHAR(255),
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
+    FOREIGN KEY (PWZLekarza) REFERENCES Lekarze(NumerPWZ)
+);
+
+INSERT INTO Wizyty
+    (IDPacjenta, PWZLekarza, Data, Typ, Status)
+VALUES
+    (1, '7263917', '2020-06-15 18:00:00', 'konsultacja', 'niepotwierdzona'),
+    (2,	'6529362', '2020-06-15 12:30:00', 'konsultacja', 'niepotwierdzona'),
+    (5,	'4294617', '2020-06-20 11:30:00', 'usunięcie zęba', 'niepotwierdzona'),
+    (6,	'4294617', '2020-06-25 16:00:00', 'badanie profilaktyczne', 'niepotwierdzona'),
+    (3,	'7263917', '2020-07-08 17:00:00', 'leczenie kanałowe', 'niepotwierdzona'),
+    (4,	'6529362', '2020-07-14 16:30:00', 'konsultacja', 'niepotwierdzona'),
+    (1, '4294617', '2020-06-20 15:00:00', 'badanie profilaktyczne', 'niepotwierdzona'),
+    (5, '6529362', '2020-06-15 13:30:00', 'usunięcie zęba', 'niepotwierdzona'),
+    (3, '7263917', '2020-07-22 12:00:00', 'leczenie kanałowe', 'niepotwierdzona');
+
+CREATE TABLE IF NOT EXISTS Skierowania(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    NrPWZLekarza VARCHAR(7) NOT NULL,
+    IDPacjenta INT(11) NOT NULL,
+    IDPodmiotu INT(11) NOT NULL,
+    DataWystawienia DATE NOT NULL,
+    Rodzaj VARCHAR(255) NOT NULL,
+    Tresc VARCHAR(65535),
+    PRIMARY KEY (ID),
+    FOREIGN KEY (NrPWZLekarza) REFERENCES Lekarze(NumerPWZ),
+    FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
+    FOREIGN KEY (IDPodmiotu) REFERENCES PodmiotyMedyczne(ID)
+);
+
+INSERT INTO Skierowania
+    (NrPWZLekarza, IDPacjenta, IDPodmiotu, DataWystawienia, Rodzaj, Tresc)
+VALUES
+    ('7263917',	3, 1, '2020-04-15', 'konsultacja', '-'),	
+    ('6529362',	6, 2, '2020-04-15', 'zdjęcie rentgenowskie', '-'),	
+    ('4294617', 2, 3, '2020-04-17', 'konsultacja', '-'),	
+    ('4294617',	5, 3, '2020-04-20', 'konsultacja', '-'),	
+    ('6529362',	1, 1, '2020-04-23', 'konsultacja', '-'),	
+    ('7263917', 4, 3, '2020-04-27', 'konsultacja', '-');
+
+CREATE TABLE IF NOT EXISTS Recepty(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    NrPWZLekarza VARCHAR(7) NOT NULL,
+    IDPacjenta INT(11) NOT NULL,
+    IDPodmiotu INT(11) NOT NULL,
+    DataWystawienia DATE NOT NULL,
+    UprawnieniaDodatkowe VARCHAR(5),
+    DataRealizacji DATE,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (NrPWZLekarza) REFERENCES Lekarze(NumerPWZ),
+    FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
+    FOREIGN KEY (IDPodmiotu) REFERENCES PodmiotyMedyczne(ID)
+);
+
+INSERT INTO Recepty
+    (NrPWZLekarza, IDPacjenta, IDPodmiotu, DataWystawienia, UprawnieniaDodatkowe, DataRealizacji)
+VALUES
+    ('7263917', 4, 4, '2020-04-15', 'brak', '2020-04-30'),	
+    ('6529362', 6, 4, '2020-04-15', 'brak', '2020-05-01'),	
+    ('4294617',	3, 4, '2020-04-17', 'brak', '2020-05-03'),	
+    ('4294617',	2, 4, '2020-04-20', 'brak', '2020-05-05'),	
+    ('6529362',	5, 4, '2020-04-23', 'brak', '2020-05-08'),	
+    ('7263917',	1, 4, '2020-04-27', 'brak', '2020-05-12');
+
+CREATE TABLE IF NOT EXISTS PozycjeRecept(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    IDRecepty INT(11) NOT NULL,
+    Nazwa VARCHAR(255) NOT NULL,
+    Ilosc INT(3) NOT NULL,
+    Dawkowanie VARCHAR(30) NOT NULL,
+    Odplatnosc VARCHAR(5) NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDRecepty) REFERENCES Recepty(ID)
+);
+
+INSERT INTO PozycjeRecept
+    (IDRecepty, Nazwa, Ilosc, Dawkowanie, Odplatnosc)
+VALUES
+    (1, 'Carident', 3, '3x1', '100%'),		
+    (2,	'Daktorin Oral', 3,	'2x2', 'R'),		
+    (3, 'DexaDent', 1, '2x2', '30%'),		
+    (4, 'Lignox', 2, '3x2', '100%'),		
+    (5, 'Metronidazol Chema - Elektromet', 1, '1x1', '50%'),		
+    (6, 'Lignox', 2, '2x1', '100%');		
+
+CREATE TABLE IF NOT EXISTS Czaty(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    IDPacjenta INT(11) NOT NULL,
+    IDPracownika INT(11) NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
+    FOREIGN KEY (IDPracownika) REFERENCES Uzytkownicy(ID)
+);
+
+INSERT INTO Czaty
+    (IDPacjenta, IDPracownika)
+VALUES
+    (4,	6),		
+    (6,	4),		
+    (1,	6);
+
+CREATE TABLE IF NOT EXISTS WiadomosciCzatow(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    IDCzatu INT(11) NOT NULL,
+    Temat VARCHAR(255) NOT NULL,
+    Tresc VARCHAR(65535) NOT NULL,
+    Status VARCHAR(30) NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDCzatu) REFERENCES Czaty(ID)
+);
+
+INSERT INTO WiadomosciCzatow
+    (IDCzatu, Temat, Tresc, Status)
+VALUES
+    (1, 'Dawkowanie', 'W jaki sposób powinien być dawkowany lek?', 'odczytane'),
+    (2, 'Zmiana terminu', 'Czy jest możliwość zmiany terminu wizyty?', 'wysłane'),
+    (3,	'Dawkowanie', 'Czy można wziąć większą dawkę leku niż zapisana?', 'odczytane');
+
+CREATE TABLE IF NOT EXISTS FormularzeKontaktowe(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    IDPacjenta INT(11) NOT NULL,
+    Temat VARCHAR(255) NOT NULL,
+    Tresc VARCHAR(65535) NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID)
+);
+
+INSERT INTO FormularzeKontaktowe
+    (IDPacjenta, Temat, Tresc)
+VALUES
+    (3, 'Dawkowanie', 'W jaki sposób należy dawkować lek?'),		
+    (1, 'Zmiana terminu', 'Czy można zmienić godzinę wizyty na póżniejszą?');
+
+CREATE TABLE IF NOT EXISTS HistorieChorob(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    IDPacjenta INT(11) NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID)
+);
+
+INSERT INTO HistorieChorob
+    (IDPacjenta)
+VALUES
+    (1),
+    (2),
+    (3),
+    (4),
+    (5),
+    (6);
+
+CREATE TABLE IF NOT EXISTS WpisyHistoriiChorob(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    IDHistoriiChoroby INT(11) NOT NULL,
+    Data DATE NOT NULL,
+    Tresc VARCHAR(65535) NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDHistoriiChoroby) REFERENCES HistorieChorob(ID)
+);
+
+INSERT INTO WpisyHistoriiChorob
+    (IDHistoriiChoroby, Data, Tresc)
+VALUES
+    (1,	'2020-04-15', 'Leczenie kanałowe lewej górnej piątki'),
+    (2,	'2020-04-15', 'Leczenie prawej dolnej trójki'),
+    (3,	'2020-04-17', 'Konsultacja'),
+    (4,	'2020-04-20', 'Usuwanie prawej dolnej siódemki'),
+    (5,	'2020-04-23', 'Konsultacja'),
+    (6,	'2020-04-27', 'Usuwanie lewej górnej szóstki');
+
+CREATE TABLE IF NOT EXISTS KopieZapasowe(
+    ID INT(3) NOT NULL AUTO_INCREMENT,
+    Data DATE NOT NULL,
+    SciezkaDoKopii VARCHAR(255) NOT NULL,
+    PRIMARY KEY (ID)
+);
+
+INSERT INTO KopieZapasowe
+    (Data, SciezkaDoKopii)
+VALUES
+    ('2020-05-19', './backups/backup_001_2020_05_19.sql'),	
+    ('2020-05-30', './backups/backup_001_2020_05_30.sql');
+
+CREATE TABLE IF NOT EXISTS WnioskiRecepta(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    IDPacjenta INT(11) NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID)
+);
+
+INSERT INTO WnioskiRecepta
+    (IDPacjenta)
+VALUES
+    (3),
+    (4);
+
+CREATE TABLE IF NOT EXISTS PozycjeWnioskowRecepty(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    IDWniosku INT(11) NOT NULL,
+    Nazwa VARCHAR(255) NOT NULL,
+    Ilosc INT(3) NOT NULL,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDWniosku) REFERENCES WnioskiRecepta(ID)
+);
+
+INSERT INTO PozycjeWnioskowRecepty
+    (IDWniosku, Nazwa, Ilosc)
+VALUES
+    (1,	'Carident',	3),	
+    (2,	'Daktorin Oral', 3),	
+    (2,	'DexaDent', 1);
+
+CREATE TABLE IF NOT EXISTS WnioskiSkierowanie(
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    IDPacjenta INT(11) NOT NULL,
+    TypUslugi VARCHAR(255) NOT NULL,
+    Szczegoly VARCHAR(65535),
+    PRIMARY KEY (ID),
+    FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID)
+);
+
+INSERT INTO WnioskiSkierowanie
+    (IDPacjenta, TypUslugi, Szczegoly)
+VALUES
+    (2, 'Konsultacja', 'W trybie pilnym'),	
+    (5, 'Zdjęcie rentgenowskie', 'W trybie pilnym'),	
+    (4, 'Konsultacja', 'W trybie pilnym');
