@@ -32,6 +32,10 @@ app.get('/panel/wizyty/pacjent', async (req, res) => {
     res.render('panel-wizyty-pacjent', {layout : 'main' });
   });
 
+  app.get('/panel/wizyty/pracownik', async (req, res) => {
+    res.render('panel-wizyty-pracownik', {layout : 'main' });
+  });
+
 app.get('/', async (req, res) => {
     res.render('rezerwuj-wizyte', {layout : 'main' });
 });
@@ -109,6 +113,14 @@ app.get('/wizyty/:id/anuluj', async (req, res) => {
     } catch (err){
         console.error(err);
         res.send(false);
+    }
+});
+
+app.get('/wizyty/wszystkie', async (req, res) => {
+    try {
+        const wizyty = await Classes.Wizyta.pobierzWizyty(res);
+    } catch (err){
+        console.error(err);
     }
 });
 
