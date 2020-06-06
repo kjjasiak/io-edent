@@ -1,3 +1,6 @@
+const UsersClasses = require('./users-classes.js');
+const Classes = require('./classes');
+
 const db = require('./db');
 const express = require('express');
 const bodyParser = require("body-parser");

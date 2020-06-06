@@ -1,0 +1,25 @@
+body {
+    padding-top: 100px;
+}
+
+body h2:first-child {
+    margin-bottom: 40px;
+}
+
+a.rezerwuj-nowa {
+    border-width: 2px;
+    font-weight: 500;
+}
+
+#lista-wizyt {
+    margin-top: 30px;
+}
+
+#lista-wizyt table td,
+#lista-wizyt table th {
+    vertical-align: middle;
+}
+
+table .cell-align-right {
+    text-align: right;
+}
