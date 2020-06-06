@@ -1,3 +1,17 @@
+function decToTime(timeString){
+    var sign = timeString < 0 ? "-" : "";
+    var hours = Math.floor(Math.abs(timeString));
+    var minutes = Math.floor((Math.abs(timeString) * 60) % 60);
+    return sign + (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+}
+
+function timeToDecimal(timeString) {
+    let time = timeString.split(':');
+    let hours = parseFloat(time[0]);
+    let minutes = parseFloat((time[1]/60.0).toFixed(2));
+    return parseFloat(hours+minutes);
+}
+
 function evalDateAndTime(dateToEval, openingTime, closingTime, timeSpanH, intervalM) {
     let date = moment(dateToEval);
 
@@ -241,4 +255,64 @@ function initReservations(idPacjenta) {
     $(document).on('click', '.rezerwuj-nowa', function(e) {
         makeReservation(e, idPacjenta);
     });
+}
+
+function localizeDayOfWeek(numOfDay) {
+    let result;
+
+    switch(numOfDay) {
+        case 0:
+          result = 7;
+          break;
+        default:
+          result = numOfDay;
+      }
+    return result;
+}
+
+function generateAppointments(zajetosc, przyjecia, interval) {
+    zajetosc = zajetosc.map(function (x) {
+        return timeToDecimal(moment(x.Data).format('HH:mm'));
+    });
+
+    let timeslots = [];
+    let date = $('#datefrom').datetimepicker('viewDate').day();
+
+    let appDays = przyjecia[0].DniPrzyjec.split(';');
+    let appHours = przyjecia[0].GodzinyPrzyjec.split(';');
+
+    appDays = appDays.map(function (x) { 
+        return parseInt(x, 10); 
+    });
+
+    if (!appDays.includes(localizeDayOfWeek(date)))
+        return false;
+
+    let hours = appHours[appDays.indexOf(localizeDayOfWeek(date))].split('-');
+
+    let timeFrom = $('#timefrom').datetimepicker('viewDate').format('HH:mm');
+    // console.log("timeFrom: "+timeFrom);
+
+    let timeFromDec = timeToDecimal(timeFrom);
+    // console.log("timeFromDec: "+timeFromDec);
+
+    let timeTo = $('#timeto').datetimepicker('viewDate').format('HH:mm');
+    // console.log("timeTo: "+timeTo);
+
+    let timeToDec = timeToDecimal(timeTo);
+    // console.log("timeToDecimal: "+timeToDec);
+
+    let startTime = parseFloat(hours[0]);
+    let endTime = parseFloat(hours[1]);
+    let numOfStops = parseInt((endTime-startTime)*(1.0/interval));
+
+    for (i = 1; i <= numOfStops; i++) {
+        if ( ((startTime >= timeFromDec) && (startTime <= timeToDec) ) && (!zajetosc.includes(startTime)) ) {
+            // console.log("sT: "+startTime+", tFD: "+timeFromDec+", tTD: "+timeToDec);
+            timeslots.push(decToTime(startTime));
+        }
+        startTime += 0.5;
+    }
+
+    return timeslots;
 }
