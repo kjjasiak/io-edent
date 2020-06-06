@@ -23,7 +23,11 @@ app.use(express.static('public'));
 
 app.get('/rezerwuj-wizyte', async (req, res) => {
     res.redirect('/');
-  });
+});
+
+app.get('/', async (req, res) => {
+    res.render('rezerwuj-wizyte', {layout : 'main' });
+});
 
 app.listen(port, host, () => {
     console.log(`Running on http://${host}:${port}/`);

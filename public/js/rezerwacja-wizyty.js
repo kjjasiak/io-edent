@@ -52,3 +52,53 @@ function initDatepickers(openingTime, closingTime, timeSpanH, intervalM) {
     //     $('#timeto').datetimepicker('minDate', e.date);
     // });
 }
+
+function initSelects() {
+    $.ajax({
+        url: "/lekarze/specjalnosci",
+        type: "GET" 
+    }).done(function (result) {
+        console.log("done");
+        // console.log(result);
+
+        $.each(result, function(key, value) 
+        {
+            $('#specjalnosc').append('<option value=' + value['Specjalnosc'] + '>' + value['Specjalnosc'] + '</option>');
+        });
+    }).fail(function(jqXHR, textStatus) {
+        console.log("fail: "+textStatus);
+    });
+
+    $("#specjalnosc").change(function() {
+        let option = $(this).val();
+
+        if (option !== "") {
+            $("#lekarz").prop("disabled", false)
+                        .empty()
+                        .append('<option value="">Wybierz...</option>');
+
+            $.ajax({
+                url: "/lekarze/specjalnosci/"+option,
+                type: "GET"     
+            }).done(function (result) {
+                console.log("done");
+                // console.log(result);
+
+                $.each(result, function(key, value) 
+                {
+                    $('#lekarz').append('<option value=' + value['ID'] + '>' + value["TytulNaukowy"] + " " + value['Imie'] + " " + value["Nazwisko"] + '</option>');
+                });
+
+                return result;
+            }).fail(function(jqXHR, textStatus) {
+                console.log("fail: "+textStatus);
+            });
+
+        }
+        else {
+            $("#lekarz").prop("disabled", true)
+                        .empty()
+                        .append('<option value="">Lekarz</option>');
+        }
+    });
+}
