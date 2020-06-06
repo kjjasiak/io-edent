@@ -39,11 +39,27 @@ app.get('/lekarze/specjalnosci', async (req, res) => {
 
 app.get('/lekarze/specjalnosci/:option', async (req, res) => {
     try {
-      const rows = await UsersClasses.Lekarz.pobierzLekarzySpecjalnosc(res, req.params.option);
+        const rows = await UsersClasses.Lekarz.pobierzLekarzySpecjalnosc(res, req.params.option);
     } catch (err){
-      console.error(err);
+        console.error(err);
     }
-  });
+});
+
+app.get('/lekarze/:id/przyjecia', async (req, res) => {
+    try {
+        const rows = await UsersClasses.Lekarz.pobierzPrzyjecia(res, req.params.id);
+    } catch (err){
+        console.error(err);
+    }
+});
+
+app.get('/wizyty/zajete/data/:data', async (req, res) => {
+    try {
+        const rows = await Classes.Wizyta.pobierzZarezerwowaneWizyty(res, req.params.data);
+    } catch (err){
+        console.error(err);
+    }
+});
 
 app.listen(port, host, () => {
     console.log(`Running on http://${host}:${port}/`);

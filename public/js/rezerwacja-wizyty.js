@@ -102,3 +102,84 @@ function initSelects() {
         }
     });
 }
+
+function showAvailableAppointments(event) {
+    event.preventDefault();
+
+    if (!validateSearchInput())
+        return;
+
+    let lekarz = $('#lekarz').val();
+
+    $.ajax({
+        url: "/lekarze/"+lekarz+"/przyjecia",
+        type: "GET",
+        dataType: 'json'  
+    }).done(function (przyjecia) {
+        console.log("done");
+        console.log($('#datefrom').datetimepicker('viewDate').format('YYYY-MM-DD'));
+        
+        $.ajax({
+            url: "/wizyty/zajete/data/" + $('#datefrom').datetimepicker('viewDate').format('YYYY-MM-DD'),
+            type: "GET",
+            // data: { 
+            //     'data': $('#datefrom').datetimepicker('viewDate').format('YYYY-MM-DD')
+            // },
+            dataType: 'json'  
+        }).done(function (zajetosc) {
+            console.log("done");
+
+            let zajeteGodziny = []
+
+            zajetosc.forEach(value => {
+                let time = moment(value.Data).format('HH:mm');
+                zajeteGodziny.push(time);
+            });
+
+            console.log("zajeteGodziny: ");
+            console.log(zajeteGodziny);
+
+            let appoint = generateAppointments(zajetosc, przyjecia, 0.5);
+
+            if (appoint == false) {
+                $("#lista-wizyt").html("<div class=\"alert alert-primary\" role=\"alert\" style=\"margin-top: 30px;\">Brak możliwości umówienia wizyty w tym dniu.</div>");
+                return;
+            }
+            
+            let string = '<table class="table"><thead><tr> <th>Godzina</th><th>Data</th><th>Lekarz</th><th class="cell-align-right">Rezerwuj wizytę</th></tr></thead>';
+            
+            let rowCounter = 1;
+
+            appoint.forEach(timeslot => {
+                string +=   "<tr id=\"rezerwuj-row-"+rowCounter+"\"><td>" + timeslot + "</td><td>"+$('#datefrom').datetimepicker('viewDate').format("DD.MM")+'</td>\
+                            <td>'+przyjecia[0].TytulNaukowy + " " + przyjecia[0].Imie + " " + przyjecia[0].Nazwisko +"</td>\
+                            <td class=\"cell-align-right\">\
+                            <input name=\"godzina\" type=\"hidden\" value=\""+timeslot+"\"/>\
+                            <input name=\"data\" type=\"hidden\" value=\""+$('#datefrom').datetimepicker('viewDate').format("DD.MM")+"\"/>\
+                            <input name=\"lekarz\" type=\"hidden\" value=\""+ przyjecia[0].NumerPWZ +"\"/>\
+                            <a id=\"rezerwuj-nowa-"+rowCounter+"\" href=\"rezerwuj-wizyte\\utworz\" class=\"btn btn-outline-primary rezerwuj-nowa\">Rezerwuj</a>\
+                            </td>\
+                            </tr>";
+                rowCounter++;
+            });
+
+            string += '</table>'; 
+            $("#lista-wizyt").html(string); 
+
+            return;
+
+        }).fail(function(jqXHR, textStatus) {
+            console.log("fail: "+textStatus);
+        });
+
+        return;
+    }).fail(function(jqXHR, textStatus) {
+        console.log("fail: "+textStatus);
+    });
+}
+
+function initAppointmentsSearch() {
+    $("#rezerwacja").submit(function(event){
+        showAvailableAppointments(event)
+    });
+}
