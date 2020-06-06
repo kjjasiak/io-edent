@@ -28,6 +28,10 @@ app.get('/rezerwuj-wizyte', async (req, res) => {
     res.redirect('/');
 });
 
+app.get('/panel/wizyty/pacjent', async (req, res) => {
+    res.render('panel-wizyty-pacjent', {layout : 'main' });
+  });
+
 app.get('/', async (req, res) => {
     res.render('rezerwuj-wizyte', {layout : 'main' });
 });
@@ -77,6 +81,34 @@ app.post('/wizyty/nowa-wizyta', async (req, res) => {
         const rows = await Classes.Wizyta.utworzWizyte(res, req.body.IDPacjenta, req.body.PWZLekarza, req.body.Data, req.body.DataJS, "konsultacja");
     } catch (err){
         console.error(err);
+    }
+});
+
+app.get('/wizyty/pacjent/:id', async (req, res) => {
+    try {
+        console.log(req.params.id);
+        const wizyty = await Classes.Wizyta.pobierzWizytyPacjent(res, req.params.id);
+    } catch (err){
+        console.error(err);
+    }
+});
+
+app.get('/wizyty/:id/zmien-status', async (req, res) => {
+    try {
+        const rows = await Classes.Wizyta.zmienStatus(res, req.query.nowyStatus, req.params.id);
+    } catch (err){
+        console.error(err);
+        res.send(false);
+    }
+});
+
+app.get('/wizyty/:id/anuluj', async (req, res) => {
+    try {
+        console.log('ok');
+        const rows = await Classes.Wizyta.zmienStatus(res, "A", req.params.id);
+    } catch (err){
+        console.error(err);
+        res.send(false);
     }
 });
 
