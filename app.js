@@ -29,6 +29,22 @@ app.get('/', async (req, res) => {
     res.render('rezerwuj-wizyte', {layout : 'main' });
 });
 
+app.get('/lekarze/specjalnosci', async (req, res) => {
+    try {
+      const rows = await UsersClasses.Lekarz.pobierzSpecjalnosci(res);
+    } catch (err){
+      console.error(err);
+    }
+});
+
+app.get('/lekarze/specjalnosci/:option', async (req, res) => {
+    try {
+      const rows = await UsersClasses.Lekarz.pobierzLekarzySpecjalnosc(res, req.params.option);
+    } catch (err){
+      console.error(err);
+    }
+  });
+
 app.listen(port, host, () => {
     console.log(`Running on http://${host}:${port}/`);
   });
