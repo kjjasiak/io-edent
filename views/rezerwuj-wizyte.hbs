@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+
+    {{!-- <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style> --}}
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+
+    <title>Zarezerwuj wizytę | Pro Dental</title>
+</head>
+
+<body>
+    {{> navbar }}
+
+    <div class="container" style="max-width: 960px;">
+        <div class="text-center">
+            <h2>Zarezerwuj wizytę</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <form id="rezerwacja" novalidate>
+                    <div class="row">
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-group">
+                                <label for="datefrom-input">Data</label>
+                                <div class="input-group date" id="datefrom" data-target-input="nearest">
+                                    <input id="datefrom-input" type="text" class="form-control datetimepicker-input"
+                                        data-target="#datefrom" />
+                                    <div class="invalid-tooltip"></div>
+                                    <div class="input-group-append" data-target="#datefrom"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-group">
+                                <label for="specjalnosc">Specjalność lekarza</label>
+                                <select class="custom-select d-block w-100" id="specjalnosc" required>
+                                    <option value="">Wybierz...</option>
+                                </select>
+                                <div class="invalid-tooltip"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 mb-3">
+                            <div class="form-group">
+                                <label for="timefrom-input">Godzina od</label>
+                                <div class="input-group date" id="timefrom" data-target-input="nearest">
+                                    <input id="timefrom-input" type="text" class="form-control datetimepicker-input"
+                                        data-target="#timefrom" />
+                                    <div class="invalid-tooltip"></div>
+                                    <div class="input-group-append" data-target="#timefrom"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 mb-3">
+                            <div class="form-group">
+                                <label for="timeto-input">Godzina do</label>
+                                    <div class="input-group date" id="timeto" data-target-input="nearest">
+                                        <input id="timeto-input" type="text" class="form-control datetimepicker-input"
+                                            data-target="#timeto" />
+                                        <div class="invalid-tooltip"></div>
+                                        <div class="input-group-append" data-target="#timeto"
+                                            data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <div class="form-group">
+                                <label for="lekarz">Lekarz</label>
+                                <select class="custom-select d-block w-100" id="lekarz" required disabled>
+                                    <option value="">Wybierz...</option>
+                                </select>
+                                <div class="invalid-tooltip"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Szukaj</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="lista-wizyt"></div>
+    </div>
+
+    {{> footer}}
+
+    {{> scripts}}
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+</body>
+
+</html>
