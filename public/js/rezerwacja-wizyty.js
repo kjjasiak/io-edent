@@ -117,6 +117,70 @@ function initSelects() {
     });
 }
 
+function validateSearchInput() {
+    let date = $('#datefrom').datetimepicker('viewDate');
+    let timeFrom = $('#timefrom').datetimepicker('viewDate');
+    let timeTo = $('#timeto').datetimepicker('viewDate');
+    let specjalnosc = $('#specjalnosc').val();
+    let lekarz = $('#lekarz').val();
+
+    timeFrom = moment(date.format('MM/DD/YYYY') + " " + timeFrom.format('HH:mm'));
+    timeTo = moment(date.format('MM/DD/YYYY') + " " + timeTo.format('HH:mm'));
+
+    let valid = true;
+
+    let today = moment(new Date()).format('MM/DD/YYYY');
+
+    if (date < moment(today + " 00:00")) {
+        $('#datefrom .invalid-tooltip').html("Data nie może być wcześniejsza niż obecna");
+        $('#datefrom input').removeClass('is-valid').addClass('is-invalid');
+        valid = false;
+    }
+    else {
+        $('#datefrom input').removeClass('is-invalid').addClass('is-valid');
+    }
+
+    console.log("timeTo: " + timeTo.format('MM/DD/YYYY HH:mm'));
+    console.log("timeFrom: " + timeFrom.format('MM/DD/YYYY HH:mm'));
+
+    if (timeTo < timeFrom) {
+        $('#timeto .invalid-tooltip').html("Godzina do musi być godziną późniejszą niż Godzina od");
+        $('#timeto input').removeClass('is-valid').addClass('is-invalid');
+        valid = false;
+    }
+    else {
+        $('#timeto input').removeClass('is-invalid').addClass('is-valid');
+    }
+
+    if (specjalnosc == '') {
+        $('#specjalnosc').parent('.form-group').css('position', 'relative');
+        $('#specjalnosc ~ .invalid-tooltip').html("Proszę wybrać specjalność");
+        $('#specjalnosc').removeClass('is-valid').addClass('is-invalid');
+        valid = false;
+    }
+    else {
+        $('#specjalnosc').removeClass('is-invalid').addClass('is-valid');
+    }
+
+    if (!$('#lekarz').is(':disabled')) {
+        if (lekarz == '') {
+            $('#lekarz').parent('.form-group').css('position', 'relative');
+            $('#lekarz ~ .invalid-tooltip').html("Proszę wybrać lekarza");
+            $('#lekarz').removeClass('is-valid').addClass('is-invalid');
+            valid = false;
+        }
+        else {
+            $('#lekarz').removeClass('is-invalid').addClass('is-valid');
+        }
+    }
+
+    if (valid) {
+        $('#datefrom input, #timefrom input, #timeto input').removeClass('is-invalid').addClass('is-valid');
+    }
+
+    return valid;
+}
+
 function showAvailableAppointments(event) {
     event.preventDefault();
 
