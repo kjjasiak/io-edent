@@ -6,7 +6,8 @@ body h2:first-child {
     margin-bottom: 40px;
 }
 
-a.rezerwuj-nowa {
+a.rezerwuj-nowa,
+a.anuluj {
     border-width: 2px;
     font-weight: 500;
 }

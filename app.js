@@ -2,6 +2,9 @@ var moment = require('moment');
 require('moment/locale/pl');
 console.log(moment.locale());
 
+// const CryptoJS = require("crypto-js");
+// let key = "IO-EDENT-2020";
+
 const UsersClasses = require('./users-classes.js');
 const Classes = require('./classes');
 
@@ -127,6 +130,17 @@ app.get('/wizyty/wszystkie', async (req, res) => {
         console.error(err);
     }
 });
+
+// app.post('/sekret', async (req, res) => {
+//     let cipher = CryptoJS.AES.encrypt(req.body.pwd, key);
+//     cipher = cipher.toString();
+//     console.log("zaszyfrowane: " + cipher);
+
+//     let decipher = CryptoJS.AES.decrypt(cipher, key);
+//     decipher = decipher.toString(CryptoJS.enc.Utf8);
+//     console.log("odszyfrowane: " + decipher);
+//     res.send(decipher);
+// });
 
 app.listen(port, host, () => {
     console.log(`Running on http://${host}:${port}/`);

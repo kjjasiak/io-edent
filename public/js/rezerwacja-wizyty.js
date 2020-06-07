@@ -12,6 +12,12 @@ function timeToDecimal(timeString) {
     return parseFloat(hours+minutes);
 }
 
+function evalDayName(dayNumber) {
+    let days = ['poniedziałki', 'wtorki', 'środy', 'czwartki', 'piątki', 'soboty', 'niedziele'];
+
+    return days[dayNumber];
+}
+
 function evalDateAndTime(dateToEval, openingTime, closingTime, timeSpanH, intervalM) {
     let date = moment(dateToEval);
 
@@ -140,9 +146,6 @@ function validateSearchInput() {
         $('#datefrom input').removeClass('is-invalid').addClass('is-valid');
     }
 
-    console.log("timeTo: " + timeTo.format('MM/DD/YYYY HH:mm'));
-    console.log("timeFrom: " + timeFrom.format('MM/DD/YYYY HH:mm'));
-
     if (timeTo < timeFrom) {
         $('#timeto .invalid-tooltip').html("Godzina do musi być godziną późniejszą niż Godzina od");
         $('#timeto input').removeClass('is-valid').addClass('is-invalid');
@@ -200,27 +203,42 @@ function showAvailableAppointments(event) {
         $.ajax({
             url: "/wizyty/zajete/data/" + $('#datefrom').datetimepicker('viewDate').format('YYYY-MM-DD'),
             type: "GET",
-            // data: { 
-            //     'data': $('#datefrom').datetimepicker('viewDate').format('YYYY-MM-DD')
-            // },
             dataType: 'json'  
         }).done(function (zajetosc) {
             console.log("done");
 
-            let zajeteGodziny = []
+            let zajeteGodziny = [];
 
             zajetosc.forEach(value => {
                 let time = moment(value.Data).format('HH:mm');
                 zajeteGodziny.push(time);
             });
 
-            console.log("zajeteGodziny: ");
-            console.log(zajeteGodziny);
-
             let appoint = generateAppointments(zajetosc, przyjecia, 0.5);
 
             if (appoint == false) {
-                $("#lista-wizyt").html("<div class=\"alert alert-primary\" role=\"alert\" style=\"margin-top: 30px;\">Brak możliwości umówienia wizyty w tym dniu.</div>");
+                let string = "<div class=\"alert alert-primary\" role=\"alert\" style=\"margin-top: 30px;\">Brak możliwości umówienia wizyty w tym dniu.\
+                                <br/>" + przyjecia[0].TytulNaukowy + " " + przyjecia[0].Imie + " " + przyjecia[0].Nazwisko + " przyjmuje w";
+                
+                let dniPrzyjec = przyjecia[0].DniPrzyjec.split(';');
+                console.log(dniPrzyjec);
+
+                dniPrzyjec.forEach((dzien, index) => {
+                    string += ' ' + evalDayName(parseInt(dzien) - 1);
+
+                    if ((dniPrzyjec.length > 2) && (index < (dniPrzyjec.length - 2))) {
+                        string += ',';
+                    }
+
+                    if ((dniPrzyjec.length > 1) && (index == (dniPrzyjec.length - 2))) {
+                        string += ' i';
+                    }
+                });
+
+                string += ".</div>";
+                
+                $("#lista-wizyt").html(string);
+
                 return;
             }
             
@@ -380,3 +398,18 @@ function generateAppointments(zajetosc, przyjecia, interval) {
 
     return timeslots;
 }
+
+// function sendSecret(secretMessage) {
+//     $.ajax({
+//         url: "/sekret",
+//         type: "POST",
+//         data: {
+//             'pwd': secretMessage
+//         },
+//         dataType: 'json'
+//     }).done(function (result) {
+//         console.log(result);
+//     }).fail(function(jqXHR, textStatus) {
+//         console.log("fail: "+textStatus);
+//     });
+// }

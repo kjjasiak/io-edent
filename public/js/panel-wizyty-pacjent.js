@@ -23,11 +23,14 @@ function getAppointments(idPacjenta) {
             string += '<tr id="wizyta-' + wizyta.id +'"><th scope="row">' + parseInt(index+1) +'</th>'
                      + '<td>' + data + '</td><td>' + godzina + '</td><td>' + result.lekarze[index].TytulNaukowy + ' '
                      + result.lekarze[index].Imie + ' ' + result.lekarze[index].Nazwisko + '</td>'
-                     + '<td class="cell-align-right"><span>' + wizyta.status + ' </span></td><td class="cell-align-right">';
+                     + '<td class="cell-align-right status">' + wizyta.status + '</td><td class="cell-align-right">';
 
-            if ((wizyta.status != "anulowana") && (wizyta.status != "zakończona"))
-                string += '<a id="anuluj-' + wizyta.id + '" href="/wizyty/' + wizyta.id + '/anuluj" class="anuluj">Anuluj rezerwację</a>';
+            string += '<a class="btn btn-outline-primary anuluj"';
             
+            if ((wizyta.status == "anulowana") || (wizyta.status == "zakończona"))
+                string += ' style="visibility: hidden;"';
+            
+            string += ' id="anuluj-' + wizyta.id + '" href="/wizyty/' + wizyta.id + '/anuluj">Anuluj rezerwację</a>';
             string += '</td></tr>';
         });
 
@@ -40,29 +43,6 @@ function getAppointments(idPacjenta) {
 }
 
 function initEvents() {
-    $(document).on('click', '.zmien-status', function(e) {
-        e.preventDefault();
-        let splitID = e.target.id.split('-');
-        let ID = splitID[splitID.length-1];
-
-        let status = $('tr#wizyta-' + ID + ' select').val();
-
-        $.ajax({
-            url: "/wizyty/" + ID + "/zmien-status",
-            type: "GET",
-            data: {
-                'nowyStatus': status
-            },
-            dataType: 'json'
-        }).done(function (result) {
-            if (!result) {
-                $("#lista-wizyt").prepend("<div class=\"alert alert-primary alert-dismissable fade show\" role=\"alert\" style=\"margin-top: 30px;\"><span>Wystąpił błąd. Prosimy spróbować ponownie za kilka minut.</span><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></div>");
-            }
-        }).fail(function(jqXHR, textStatus) {
-            console.log("fail: "+textStatus);
-        });
-    })
-
     $(document).on('click', 'a.anuluj', function(e) {
         e.preventDefault();
         let splitID = e.target.id.split('-');
@@ -75,10 +55,8 @@ function initEvents() {
             dataType: 'json'
         }).done(function (result) {
             console.log(result);
-            $("#wizyta-" + ID + " td:last-child").html("<span>anulowana</span>");
-            // if (!result) {
-            //     $("#lista-wizyt").prepend("<div class=\"alert alert-primary alert-dismissable fade show\" role=\"alert\" style=\"margin-top: 30px;\"><span>Wystąpił błąd. Prosimy spróbować ponownie za kilka minut.</span><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></div>");
-            // }
+            $("#wizyta-" + ID + " td.status").html("anulowana");
+            $('#wizyta-' + ID + ' a.anuluj').css('visibility', 'hidden');
         }).fail(function(jqXHR, textStatus) {
             console.log("fail: "+textStatus);
         });

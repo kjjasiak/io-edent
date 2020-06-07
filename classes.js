@@ -58,11 +58,8 @@ Wizyta.pobierzWizyty = async function pobierzWizyty(res) {
 Wizyta.pobierzWizytyPacjent = async function pobierzWizytyPacjent(res, idPacjenta) {
     let conn;
 
-    //console.log(idPacjenta);
-
     try {
         conn = await db.pool.getConnection();
-        //const wizyty = await conn.query('SELECT * FROM Wizyty WHERE IDPacjenta = ? AND NOT Status = ? ORDER BY Data DESC', [idPacjenta, "anulowana"]);
         const wizyty = await conn.query('SELECT * FROM Wizyty WHERE IDPacjenta = ? ORDER BY Data DESC', [idPacjenta]);
 
         let listaWizyt = [];
@@ -71,12 +68,6 @@ Wizyta.pobierzWizytyPacjent = async function pobierzWizytyPacjent(res, idPacjent
             w = new Wizyta(el.ID, el.IDPacjenta, el.PWZLekarza, el.Data, el.Typ, el.Status);
             listaWizyt.push(w);
         });
-
-        // const lekarze = await conn.query('SELECT wizyty.ID AS IDWizyty, lekarze.TytulNaukowy, daneuzytkownikow.Imie, daneuzytkownikow.Nazwisko FROM Wizyty'
-        //                               + ' JOIN lekarze ON lekarze.NumerPWZ = wizyty.PWZLekarza'
-        //                               + ' JOIN daneuzytkownikow ON daneuzytkownikow.IDUzytkownika = lekarze.IDUzytkownika'
-        //                               + ' WHERE wizyty.IDPacjenta = ? AND NOT Status = ?'
-        //                               + ' ORDER BY wizyty.Data DESC', [idPacjenta, "anulowana"]);
 
         const lekarze = await conn.query('SELECT wizyty.ID AS IDWizyty, lekarze.TytulNaukowy, daneuzytkownikow.Imie, daneuzytkownikow.Nazwisko FROM Wizyty'
                                       + ' JOIN lekarze ON lekarze.NumerPWZ = wizyty.PWZLekarza'
@@ -103,7 +94,7 @@ Wizyta.pobierzZarezerwowaneWizyty = async function pobierzZarezerwowaneWizyty(re
 
     try {
         conn = await db.pool.getConnection();
-        const rows = await conn.query('SELECT Data FROM Wizyty WHERE Data LIKE "%' + data + '%" AND NOT Status = "anulowana"');
+        const rows = await conn.query('SELECT Data FROM Wizyty WHERE Data LIKE "%?%" AND NOT Status = "anulowana"', [data]);
         res.send(rows);
     } catch (err){
         console.error(err);
@@ -123,6 +114,7 @@ Wizyta.sprawdzTermin = async function sprawdzTermin(res, data, godzina, PWZLekar
         console.log(godzina);
 
         const rows = await conn.query('SELECT COUNT(*) AS liczba FROM Wizyty WHERE Data = "'+data+' '+godzina+'" AND PWZLekarza = "'+PWZLekarza+'" AND NOT Status = "anulowana" LIMIT 1');
+        //const rows = await conn.query('SELECT COUNT(*) AS liczba FROM Wizyty WHERE Data = "?" AND PWZLekarza = "?" AND NOT Status = "anulowana" LIMIT 1', [data + ' ' + godzina, PWZLekarza]);
         console.log(rows);
         res.send(rows);
     } catch (err){
