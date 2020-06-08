@@ -1,130 +1,119 @@
 const db = require('./db');
+const Classes = require('./classes')
 
-function Uzytkownik(login, haslo, imie, nazwisko, telefon, adres, email, rola) {
+function Uzytkownik(idUzytkownika = null, login, haslo, imie, nazwisko, rola, telefon, email, ulica, nrDomuMieszkania, kodPocztowy, miasto) {
     let self = {
-        id: null,
+        idUzytkownika: idUzytkownika,
         login: login,
         imie: imie,
         nazwisko: nazwisko,
+        rola: rola,
         telefon: telefon,
-        adres: adres,
         email: email,
-        rola: rola
+        ulica: ulica,
+        nrDomuMieszkania: nrDomuMieszkania,
+        kodPocztowy: kodPocztowy,
+        miasto: miasto
     };
 
-    this.zaloguj = function(login, haslo) {
-        return;
-    };
-
-    this.pokazLogin = function() {
-        return self.login;
-    }
-
-    this.pokazID = function() {
-        return self.id;
+    this.edytuj = function() {
+        // ...
     }
 
     return self;
 }
 
-function Pacjent(login, haslo, imie, nazwisko, telefon, adres, email, rola, pesel, dataUrodzenia, oddzialNFZ) {
-    let self = Uzytkownik.call(this, login, haslo, imie, nazwisko, telefon, adres, email, rola);
+Uzytkownik.dodaj = async function dodaj(login, haslo, imie, nazwisko, rola, telefon, email, ulica, nrDomuMieszkania, kodPocztowy, miasto) {
+    // ...
+};
 
+Uzytkownik.usun = async function usun(idUzytkownika) {
+    // ...
+};
+
+Uzytkownik.zaloguj = async function zaloguj(login, haslo) {
+    // ...
+};
+
+function Pacjent(idPacjenta = null, login, haslo, imie, nazwisko, rola, telefon, email, ulica, nrDomuMieszkania, kodPocztowy, miasto, pesel, dataUrodzenia, oddzialNFZ) {
+    let self = Uzytkownik.call(this, login, haslo, imie, nazwisko, rola, telefon, email, ulica, nrDomuMieszkania, kodPocztowy, miasto);
+
+    self.idPacjenta = idPacjenta;
     self.pesel = pesel;
     self.dataUrodzenia = new Date(dataUrodzenia);
     self.oddzialNFZ = oddzialNFZ;
     self.listaRecept = [];
     self.listaSkierowan = [];
-
-    this.rezerwujWizyte = function(wizyta) {
-        // ...
-    }
-
-    this.wyswietlRecepte = function(recepta) {
-        // ...
-    }
-        
-    this.wyswietlSkierowanie = function(skierowanie) {
-        // ...
-    }
-        
-    this.zlozWniosekORecepte = function(wniosek) {
-        // ...
-    }
-        
-    this.zlozWniosekOSkierowanie = function(wniosek) {
-        // ...
-    }
-        
-    this.anulujWizyte = function(idWizyty) {
-        // ...
-    }
-        
-    this.wyslijWiadomosciNaCzacie = function(idCzatu, wiadomosc) {
-        // ...
-    }
-        
-    this.wypelnijFormularzKontaktowy = function(formularz) {
-        // ...
-    }
-        
-    this.wyslijProsbeOUsuniecie = function(idUzytkownika) {
-        // ...
-    }
 }
 
-function Lekarz(login, haslo, imie, nazwisko, telefon, adres, email, rola, numerPWZ, tytulNaukowy, specjalnosc, dniPrzyjec, godzinyPrzyjec) {
-    let self = Uzytkownik.call(this, login, haslo, imie, nazwisko, telefon, adres, email, rola);
+Pacjent.rezerwujWizyte = async function utworzWizyte(res, IDPacjenta, PWZLekarza, Data, DataJS, Typ) {
+    try {
+        const wizyta = await Classes.Wizyta.utworzWizyte(res, IDPacjenta, PWZLekarza, Data, DataJS, Typ);
+        //res.send(wizyta);
+    } catch (err){
+        //res.send(false);
+        console.error(err);
+    }
+};
+
+Pacjent.anulujWizyte = async function anulujWizyte(res, idWizyty) {
+    try {
+        const rows = await Classes.Wizyta.zmienStatus(res, "A", idWizyty);
+        //res.send(wizyta);
+    } catch (err){
+        //res.send(false);
+        console.error(err);
+    }
+};
+
+Pacjent.pobierzListeRecept = async function pobierzListeRecept() {
+    // ...
+};
+
+Pacjent.pobierzListeSkierowan = async function pobierzListeSkierowan() {
+    // ...
+};
+
+Pacjent.wyswietlRecepte = async function wyswietlRecepte() {
+    // ...
+};
+    
+Pacjent.wyswietlSkierowanie = async function wyswietlSkierowanie() {
+    // ...
+};
+    
+Pacjent.zlozWniosekORecepte = async function zlozWniosekORecepte() {
+    // ...
+};
+    
+Pacjent.zlozWniosekOSkierowanie = async function zlozWniosekOSkierowanie() {
+    // ...
+};
+    
+Pacjent.wyslijWiadomosciNaCzacie = async function wyslijWiadomosciNaCzacie() {
+    // ...
+};
+    
+Pacjent.wypelnijFormularzKontaktowy = async function wypelnijFormularzKontaktowy() {
+    // ...
+};
+    
+Pacjent.wyslijProsbeOUsuniecie = async function wyslijProsbeOUsuniecie() {
+    // ...
+};
+
+Pacjent.utworzKonto = async function utworzKonto() {
+    // ...
+};
+
+function Lekarz(login, haslo, imie, nazwisko, rola, telefon, email, ulica, nrDomuMieszkania, kodPocztowy, miasto, numerPWZ, tytulNaukowy, specjalnosc, dniPrzyjec, godzinyPrzyjec) {
+    let self = Uzytkownik.call(this, login, haslo, imie, nazwisko, rola, telefon, email, ulica, nrDomuMieszkania, kodPocztowy, miasto);
 
     self.numerPWZ = numerPWZ;
     self.tytulNaukowy = tytulNaukowy;
     self.specjalnosc = specjalnosc;
     self.dniPrzyjec = dniPrzyjec;
     self.godzinyPrzyjec = godzinyPrzyjec;
-
-    this.wystawRecepte = function(recepta) {
-        // ...
-    }
-
-    this.wyswietlRecepte = function(idRecepty) {
-        // ...
-    }
-
-    this.wyswietlSkierowanie = function(idSkierowania) {
-        // ...
-    }
-
-    this.wystawSkierowanie = function(skierowanie) {
-        // ...
-    }
-
-    this.skierujDoLekarza = function(idLekarza) {
-        // ...
-    }
-
-    this.skierujDoPodmiotu = function(idPodmiotu) {
-        // ...
-    }
-
-    this.zalozHistorieChoroby = function(idUzytkownika) {
-        // ...
-    }
-
-    this.wyswietlHistorieChoroby = function(idHistoriiChoroby) {
-        // ...
-    }
-
-    this.edytujHistorieChoroby = function(idHistoriiChoroby) {
-        // ...
-    }
-
-    this.odpowiedzNaWiadomoscFormularz = function() {
-        // ...
-    }
-
-    this.odpowiedzNaWiadomoscCzat = function() {
-        // ...
-    }
 }
 
 Lekarz.pobierzPrzyjecia = async function pobierzPrzyjecia(res, idLekarza) {
@@ -183,54 +172,85 @@ Lekarz.pobierzLekarzySpecjalnosc = async function pobierzLekarzySpecjalnosc(res,
     }
 }
 
-function Administrator(login, haslo, imie, nazwisko, telefon, adres, email, rola) {
-    let self = Uzytkownik.call(this, login, haslo, imie, nazwisko, telefon, adres, email, rola);
-    
-    this.wykonajKopieZapasowa = function() {
-        // ...
-    }
+Lekarz.wystawRecepte = async function wystawRecepte() {
+    // ...
+};
 
-    this.utworzKontoUzytkownika = function(uzytkownik) {
-        // ...
-    }
+Lekarz.wyswietlRecepte = async function wyswietlRecepte() {
+    // ...
+};
 
-    this.edytujKontoUzytkownika = function(idUzytkownika) {
-        // ...
-    }
+Lekarz.wyswietlSkierowanie = async function wyswietlSkierowanie() {
+    // ...
+};
 
-    this.utworzKopieZapasowa = function(kopiaZapasowa) {
-        // ...
-    }
+Lekarz.wystawSkierowanie = async function wystawSkierowanie() {
+    // ...
+};
+
+Lekarz.skierujDoLekarza = async function skierujDoLekarza() {
+    // ...
+};
+
+Lekarz.skierujDoPodmiotu = async function skierujDoPodmiotu() {
+    // ...
+};
+
+Lekarz.zalozHistorieChoroby = async function zalozHistorieChoroby() {
+    // ...
+};
+
+Lekarz.wyswietlHistorieChoroby = async function wyswietlHistorieChoroby() {
+    // ...
+};
+
+Lekarz.edytujHistorieChoroby = async function edytujHistorieChoroby() {
+    // ...
+};
+
+Lekarz.odpowiedzNaWiadomoscFormularz = async function odpowiedzNaWiadomoscFormularz() {
+    // ...
+};
+
+Lekarz.odpowiedzNaWiadomoscCzat = async function odpowiedzNaWiadomoscCzat() {
+    // ...
+};
+
+Lekarz.drukujHistorieChoroby = async function drukujHistorieChoroby() {
+    // ...
+};
+
+function PracownikRecepcji(login, haslo, imie, nazwisko, rola, telefon, email, ulica, nrDomuMieszkania, kodPocztowy, miasto) {
+    let self = Uzytkownik.call(this, login, haslo, imie, nazwisko, rola, telefon, email, ulica, nrDomuMieszkania, kodPocztowy, miasto);
 }
 
-function PracownikRecepcji(login, haslo, imie, nazwisko, telefon, adres, email, rola) {
-    let self = Uzytkownik.call(this, login, haslo, imie, nazwisko, telefon, adres, email, rola);
-    
-    this.anulujWizyte = function(idWizyty) {
-        // ...
-    }
+PracownikRecepcji.anulujWizyte = async function anulujWizyte() {
+    // ...
+};
 
-    this.potwierdzWizyte = function(idWizyty) {
-        // ...
-    }
+PracownikRecepcji.potwierdzWizyte = async function potwierdzWizyte() {
+    // ...
+};
 
-    this.zalozHistorieChoroby = function(idUzytkownika) {
-        // ...
-    }
+PracownikRecepcji.zalozHistorieChoroby = async function zalozHistorieChoroby() {
+    // ...
+};
 
-    this.odpowiedzNaWiadomoscFormularz = function() {
-        // ...
-    }
+PracownikRecepcji.odpowiedzNaWiadomoscFormularz = async function odpowiedzNaWiadomoscFormularz() {
+    // ...
+};
 
-    this.odpowiedzNaWiadomoscCzat = function() {
-        // ...
-    }
-}
+PracownikRecepcji.odpowiedzNaWiadomoscCzat = async function odpowiedzNaWiadomoscCzat() {
+    // ...
+};
+
+PracownikRecepcji.drukujHistorieChoroby = async function drukujHistorieChoroby() {
+    // ...
+};
 
 module.exports = {
     Uzytkownik: Uzytkownik,
     Pacjent: Pacjent,
     Lekarz: Lekarz,
-    Administrator: Administrator,
     PracownikRecepcji: PracownikRecepcji
 };

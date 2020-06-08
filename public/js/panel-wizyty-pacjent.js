@@ -4,7 +4,6 @@ function getAppointments(idPacjenta) {
         type: "GET"
     }).done(function (result) {
         console.log("done");
-        console.log(result);
 
         if (result.wizyty.length == 0) {
             $("#lista-wizyt").html("<div class=\"alert alert-primary\" role=\"alert\" style=\"margin-top: 30px;\">Brak zarezerwowanych wizyt</div>");
@@ -30,7 +29,7 @@ function getAppointments(idPacjenta) {
             if ((wizyta.status == "anulowana") || (wizyta.status == "zakończona"))
                 string += ' style="visibility: hidden;"';
             
-            string += ' id="anuluj-' + wizyta.id + '" href="/wizyty/' + wizyta.id + '/anuluj">Anuluj rezerwację</a>';
+            string += ' id="anuluj-' + wizyta.id + '" href="panel/wizyty/pacjent/wizyta/' + wizyta.id + '/anuluj">Anuluj rezerwację</a>';
             string += '</td></tr>';
         });
 
@@ -47,14 +46,12 @@ function initEvents() {
         e.preventDefault();
         let splitID = e.target.id.split('-');
         let ID = splitID[splitID.length-1];
-        console.log(e.target.href);
-        
+
         $.ajax({
             url: e.target.href,
             type: "GET",
             dataType: 'json'
         }).done(function (result) {
-            console.log(result);
             $("#wizyta-" + ID + " td.status").html("anulowana");
             $('#wizyta-' + ID + ' a.anuluj').css('visibility', 'hidden');
         }).fail(function(jqXHR, textStatus) {

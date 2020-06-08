@@ -5,8 +5,8 @@ USE edent;
 CREATE TABLE IF NOT EXISTS Uzytkownicy(
     ID INT(11) NOT NULL AUTO_INCREMENT,
     Login VARCHAR(30) NOT NULL,
-    Haslo VARCHAR(40) NOT NULL,
-    Email VARCHAR(50) NOT NULL,
+    Haslo VARCHAR(255) NOT NULL,
+    Email VARCHAR(70) NOT NULL,
     Rola VARCHAR(50) NOT NULL,
     PRIMARY KEY (ID)
 );
@@ -27,13 +27,13 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS DaneUzytkownikow(
     IDUzytkownika INT(11) NOT NULL,
-    Imie VARCHAR(255) NOT NULL,
-    Nazwisko VARCHAR(255) NOT NULL,
-    Telefon VARCHAR(9) NOT NULL,
-    Ulica VARCHAR(255) NOT NULL,
-    NrDomuMieszkania VARCHAR(255) NOT NULL,
+    Imie VARCHAR(30) NOT NULL,
+    Nazwisko VARCHAR(50) NOT NULL,
+    Telefon VARCHAR(15) NOT NULL,
+    Ulica VARCHAR(70) NOT NULL,
+    NrDomuMieszkania VARCHAR(10) NOT NULL,
     KodPocztowy VARCHAR(6) NOT NULL,
-    Miasto VARCHAR(255) NOT NULL,
+    Miasto VARCHAR(50) NOT NULL,
     PRIMARY KEY (IDUzytkownika),
     FOREIGN KEY (IDUzytkownika) REFERENCES Uzytkownicy(ID)
 );
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS Pacjenci(
     ID INT(11) NOT NULL AUTO_INCREMENT,
     Pesel VARCHAR(11) NOT NULL,
     DataUrodzenia DATE NOT NULL,
-    OddzialNFZ TINYINT(4),
+    OddzialNFZ TINYINT(2),
     IDUzytkownika INT(11) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDUzytkownika) REFERENCES Uzytkownicy(ID)
@@ -74,11 +74,11 @@ VALUES
 
 CREATE TABLE IF NOT EXISTS Lekarze(
     NumerPWZ VARCHAR(7) NOT NULL,
-    TytulNaukowy VARCHAR(255) NOT NULL,
+    TytulNaukowy VARCHAR(20) NOT NULL,
     Specjalnosc VARCHAR(255) NOT NULL,
     IDUzytkownika INT(11) NOT NULL,
     DniPrzyjec VARCHAR(255),
-    GodzinyPrzyjec VARCHAR(65535),
+    GodzinyPrzyjec VARCHAR(255),
     PRIMARY KEY (NumerPWZ),
     FOREIGN KEY (IDUzytkownika) REFERENCES Uzytkownicy(ID)
 );
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS PodmiotyMedyczne(
     NrWpisuRPWDL VARCHAR(12) NOT NULL,
     Nazwa VARCHAR(255) NOT NULL,
     Adres VARCHAR(255) NOT NULL,
-    Telefon VARCHAR(9) NOT NULL,
+    Telefon VARCHAR(15) NOT NULL,
     Typ VARCHAR(255),
     PRIMARY KEY (ID)
 );
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS Wizyty(
     PWZLekarza VARCHAR(7) NOT NULL,
     Data DATETIME NOT NULL,
     Typ VARCHAR(255),
-    Status VARCHAR(255),
+    Status VARCHAR(30) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
     FOREIGN KEY (PWZLekarza) REFERENCES Lekarze(NumerPWZ)
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS Recepty(
     IDPodmiotu INT(11) NOT NULL,
     DataWystawienia DATE NOT NULL,
     UprawnieniaDodatkowe VARCHAR(5),
-    DataRealizacji DATE,
+    DataRealizacjiOdDnia DATE NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (NrPWZLekarza) REFERENCES Lekarze(NumerPWZ),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS Recepty(
 );
 
 INSERT INTO Recepty
-    (NrPWZLekarza, IDPacjenta, IDPodmiotu, DataWystawienia, UprawnieniaDodatkowe, DataRealizacji)
+    (NrPWZLekarza, IDPacjenta, IDPodmiotu, DataWystawienia, UprawnieniaDodatkowe, DataRealizacjiOdDnia)
 VALUES
     ('7263917', 4, 4, '2020-04-15', 'brak', '2020-04-30'),	
     ('6529362', 6, 4, '2020-04-15', 'brak', '2020-05-01'),	
@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS PozycjeRecept(
     IDRecepty INT(11) NOT NULL,
     Nazwa VARCHAR(255) NOT NULL,
     Ilosc INT(3) NOT NULL,
-    Dawkowanie VARCHAR(30) NOT NULL,
+    Dawkowanie VARCHAR(50) NOT NULL,
     Odplatnosc VARCHAR(5) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDRecepty) REFERENCES Recepty(ID)

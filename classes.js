@@ -7,8 +7,8 @@ const wizytaStatus = {
     Z: 'zakończona'
 };
 
-let Wizyta = function(id, idPacjenta, PWZLekarza, data, typ, status = wizytaStatus.NP) {
-    this.id = id;
+let Wizyta = function(idWizyty = null, idPacjenta, PWZLekarza, data, typ, status = wizytaStatus.NP) {
+    this.idWizyty = idWizyty;
     this.idPacjenta = idPacjenta;
     this.PWZLekarza =  PWZLekarza;
     this.data = new Date(data);
@@ -94,7 +94,8 @@ Wizyta.pobierzZarezerwowaneWizyty = async function pobierzZarezerwowaneWizyty(re
 
     try {
         conn = await db.pool.getConnection();
-        const rows = await conn.query('SELECT Data FROM Wizyty WHERE Data LIKE "%?%" AND NOT Status = "anulowana"', [data]);
+        //const rows = await conn.query('SELECT Data FROM Wizyty WHERE Data LIKE "%?%" AND NOT Status = "anulowana"', [data]);
+        const rows = await conn.query('SELECT Data FROM Wizyty WHERE Data LIKE "%' + data + '%" AND NOT Status = "anulowana"');
         res.send(rows);
     } catch (err){
         console.error(err);
@@ -108,14 +109,7 @@ Wizyta.sprawdzTermin = async function sprawdzTermin(res, data, godzina, PWZLekar
 
     try {
         conn = await db.pool.getConnection();
-
-        console.log(data);
-        console.log(PWZLekarza);
-        console.log(godzina);
-
         const rows = await conn.query('SELECT COUNT(*) AS liczba FROM Wizyty WHERE Data = "'+data+' '+godzina+'" AND PWZLekarza = "'+PWZLekarza+'" AND NOT Status = "anulowana" LIMIT 1');
-        //const rows = await conn.query('SELECT COUNT(*) AS liczba FROM Wizyty WHERE Data = "?" AND PWZLekarza = "?" AND NOT Status = "anulowana" LIMIT 1', [data + ' ' + godzina, PWZLekarza]);
-        console.log(rows);
         res.send(rows);
     } catch (err){
         console.error(err);
@@ -131,8 +125,7 @@ Wizyta.utworzWizyte = async function utworzWizyte(res, IDPacjenta, PWZLekarza, D
         wizyta = new Wizyta(null, IDPacjenta, PWZLekarza, DataJS, Typ);
         conn = await db.pool.getConnection();
         const rows = await conn.query('INSERT INTO Wizyty (IDPacjenta, PWZLekarza, Data, Typ, Status) VALUES (?, ?, ?, ?, ?)',[wizyta.idPacjenta, wizyta.PWZLekarza, wizyta.data, wizyta.typ, wizyta.status]);
-        console.log(rows);
-        wizyta.id = rows.insertId;
+        wizyta.idWizyty = rows.insertId;
         res.send(wizyta);
     } catch (err){
         res.send(false);
@@ -155,6 +148,10 @@ Wizyta.zmienStatus = async function zmienStatus(res, nowyStatus, IDWizyty) {
     } finally {
         if (conn) return conn.end();
     }
+};
+
+Wizyta.pobierzWizyte = async function pobierzWizyte() {
+    // ...
 };
 
 module.exports = {

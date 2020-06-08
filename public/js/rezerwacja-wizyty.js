@@ -58,19 +58,10 @@ function initDatepickers(openingTime, closingTime, timeSpanH, intervalM) {
     });
 
     $('#datefrom').on("change.datetimepicker", function (e) {
-        // console.log(e.date.format('MM/DD/YYYY HH:mm'));
-
         $('#timeto').datetimepicker('maxDate', moment(e.date.format('MM/DD/YYYY') + ' 20:00'));
         $('#timeto').datetimepicker('date', moment(e.date.format('MM/DD/YYYY') + " " + $('#timeto').datetimepicker('viewDate').format('HH:mm')));
         $('#timefrom').datetimepicker('date', moment(e.date.format('MM/DD/YYYY') + " " + $('#timefrom').datetimepicker('viewDate').format('HH:mm')));
-        
-        // console.log("#timeFrom: " + $('#timefrom').datetimepicker('viewDate').format('MM/DD/YYYY HH:mm'));
-        // console.log("#timeTo: " + $('#timeto').datetimepicker('viewDate').format('MM/DD/YYYY HH:mm'));
     });
-
-    // $("#timefrom").on("change.datetimepicker", function (e) {
-    //     $('#timeto').datetimepicker('minDate', e.date);
-    // });
 }
 
 function initSelects() {
@@ -79,7 +70,6 @@ function initSelects() {
         type: "GET" 
     }).done(function (result) {
         console.log("done");
-        // console.log(result);
 
         $.each(result, function(key, value) 
         {
@@ -102,7 +92,6 @@ function initSelects() {
                 type: "GET"     
             }).done(function (result) {
                 console.log("done");
-                // console.log(result);
 
                 $.each(result, function(key, value) 
                 {
@@ -198,7 +187,6 @@ function showAvailableAppointments(event) {
         dataType: 'json'  
     }).done(function (przyjecia) {
         console.log("done");
-        console.log($('#datefrom').datetimepicker('viewDate').format('YYYY-MM-DD'));
         
         $.ajax({
             url: "/wizyty/zajete/data/" + $('#datefrom').datetimepicker('viewDate').format('YYYY-MM-DD'),
@@ -221,7 +209,6 @@ function showAvailableAppointments(event) {
                                 <br/>" + przyjecia[0].TytulNaukowy + " " + przyjecia[0].Imie + " " + przyjecia[0].Nazwisko + " przyjmuje w";
                 
                 let dniPrzyjec = przyjecia[0].DniPrzyjec.split(';');
-                console.log(dniPrzyjec);
 
                 dniPrzyjec.forEach((dzien, index) => {
                     string += ' ' + evalDayName(parseInt(dzien) - 1);
@@ -247,11 +234,11 @@ function showAvailableAppointments(event) {
             let rowCounter = 1;
 
             appoint.forEach(timeslot => {
-                string +=   "<tr id=\"rezerwuj-row-"+rowCounter+"\"><td>" + timeslot + "</td><td>"+$('#datefrom').datetimepicker('viewDate').format("DD.MM")+'</td>\
+                string +=   "<tr id=\"rezerwuj-row-"+rowCounter+"\"><td>" + timeslot + "</td><td>"+$('#datefrom').datetimepicker('viewDate').format("DD.MM.YYYY")+'</td>\
                             <td>'+przyjecia[0].TytulNaukowy + " " + przyjecia[0].Imie + " " + przyjecia[0].Nazwisko +"</td>\
                             <td class=\"cell-align-right\">\
                             <input name=\"godzina\" type=\"hidden\" value=\""+timeslot+"\"/>\
-                            <input name=\"data\" type=\"hidden\" value=\""+$('#datefrom').datetimepicker('viewDate').format("DD.MM")+"\"/>\
+                            <input name=\"data\" type=\"hidden\" value=\""+$('#datefrom').datetimepicker('viewDate').format("DD.MM.YYYY")+"\"/>\
                             <input name=\"lekarz\" type=\"hidden\" value=\""+ przyjecia[0].NumerPWZ +"\"/>\
                             <a id=\"rezerwuj-nowa-"+rowCounter+"\" href=\"rezerwuj-wizyte\\utworz\" class=\"btn btn-outline-primary rezerwuj-nowa\">Rezerwuj</a>\
                             </td>\
@@ -296,8 +283,6 @@ function makeReservation(e, idPacjenta) {
         dataType: 'json'  
     }).done(function (check) {
         console.log("done");
-        console.log("check: ");
-        console.log(check);
 
         if (check[0].liczba != 0) {
             $("#lista-wizyt").prepend("<div class=\"alert alert-primary alert-dismissable fade show\" role=\"alert\" style=\"margin-top: 30px;\"><span>Przykro nam, ale ktoś inny zdążył już zarezerwować ten termin. Prosimy wybrać inny.</span><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></div>");
@@ -306,7 +291,6 @@ function makeReservation(e, idPacjenta) {
         }
 
         let dataJS = moment(data + ' ' + godzina + ':00');
-        console.log(dataJS.toDate());
 
         $.ajax({
             url: "/wizyty/nowa-wizyta",
@@ -373,16 +357,9 @@ function generateAppointments(zajetosc, przyjecia, interval) {
     let hours = appHours[appDays.indexOf(localizeDayOfWeek(date))].split('-');
 
     let timeFrom = $('#timefrom').datetimepicker('viewDate').format('HH:mm');
-    // console.log("timeFrom: "+timeFrom);
-
     let timeFromDec = timeToDecimal(timeFrom);
-    // console.log("timeFromDec: "+timeFromDec);
-
     let timeTo = $('#timeto').datetimepicker('viewDate').format('HH:mm');
-    // console.log("timeTo: "+timeTo);
-
     let timeToDec = timeToDecimal(timeTo);
-    // console.log("timeToDecimal: "+timeToDec);
 
     let startTime = parseFloat(hours[0]);
     let endTime = parseFloat(hours[1]);
@@ -390,7 +367,6 @@ function generateAppointments(zajetosc, przyjecia, interval) {
 
     for (i = 1; i <= numOfStops; i++) {
         if ( ((startTime >= timeFromDec) && (startTime <= timeToDec) ) && (!zajetosc.includes(startTime)) ) {
-            // console.log("sT: "+startTime+", tFD: "+timeFromDec+", tTD: "+timeToDec);
             timeslots.push(decToTime(startTime));
         }
         startTime += 0.5;
@@ -398,18 +374,3 @@ function generateAppointments(zajetosc, przyjecia, interval) {
 
     return timeslots;
 }
-
-// function sendSecret(secretMessage) {
-//     $.ajax({
-//         url: "/sekret",
-//         type: "POST",
-//         data: {
-//             'pwd': secretMessage
-//         },
-//         dataType: 'json'
-//     }).done(function (result) {
-//         console.log(result);
-//     }).fail(function(jqXHR, textStatus) {
-//         console.log("fail: "+textStatus);
-//     });
-// }

@@ -1,9 +1,5 @@
 var moment = require('moment');
 require('moment/locale/pl');
-console.log(moment.locale());
-
-// const CryptoJS = require("crypto-js");
-// let key = "IO-EDENT-2020";
 
 const UsersClasses = require('./users-classes.js');
 const Classes = require('./classes');
@@ -89,7 +85,7 @@ app.get('/wizyty/zajete/data/:data/godzina/:godzina/lekarz/:lekarz', async (req,
   
 app.post('/wizyty/nowa-wizyta', async (req, res) => {
     try {
-        const rows = await Classes.Wizyta.utworzWizyte(res, req.body.IDPacjenta, req.body.PWZLekarza, req.body.Data, req.body.DataJS, "konsultacja");
+        const rows = await UsersClasses.Pacjent.rezerwujWizyte(res, req.body.IDPacjenta, req.body.PWZLekarza, req.body.Data, req.body.DataJS, "konsultacja");
     } catch (err){
         console.error(err);
     }
@@ -97,7 +93,6 @@ app.post('/wizyty/nowa-wizyta', async (req, res) => {
 
 app.get('/wizyty/pacjent/:id', async (req, res) => {
     try {
-        console.log(req.params.id);
         const wizyty = await Classes.Wizyta.pobierzWizytyPacjent(res, req.params.id);
     } catch (err){
         console.error(err);
@@ -113,9 +108,17 @@ app.get('/wizyty/:id/zmien-status', async (req, res) => {
     }
 });
 
+app.get('/panel/wizyty/pacjent/wizyta/:id/anuluj', async (req, res) => {
+    try {
+        const rows = await UsersClasses.Pacjent.anulujWizyte(res, req.params.id);
+    } catch (err){
+        console.error(err);
+        res.send(false);
+    }
+});
+
 app.get('/wizyty/:id/anuluj', async (req, res) => {
     try {
-        console.log('ok');
         const rows = await Classes.Wizyta.zmienStatus(res, "A", req.params.id);
     } catch (err){
         console.error(err);
@@ -130,17 +133,6 @@ app.get('/wizyty/wszystkie', async (req, res) => {
         console.error(err);
     }
 });
-
-// app.post('/sekret', async (req, res) => {
-//     let cipher = CryptoJS.AES.encrypt(req.body.pwd, key);
-//     cipher = cipher.toString();
-//     console.log("zaszyfrowane: " + cipher);
-
-//     let decipher = CryptoJS.AES.decrypt(cipher, key);
-//     decipher = decipher.toString(CryptoJS.enc.Utf8);
-//     console.log("odszyfrowane: " + decipher);
-//     res.send(decipher);
-// });
 
 app.listen(port, host, () => {
     console.log(`Running on http://${host}:${port}/`);

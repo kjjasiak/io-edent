@@ -4,7 +4,6 @@ function getAppointments() {
         type: "GET"
     }).done(function (result) {
         console.log("done");
-        console.log(result);
 
         if (result.wizyty.length == 0) {
             $("#lista-wizyt").html("<div class=\"alert alert-primary\" role=\"alert\" style=\"margin-top: 30px;\">Brak zarezerwowanych wizyt</div>");
@@ -12,7 +11,7 @@ function getAppointments() {
         }
 
         let string = '<table class="table table-hover"><thead><tr><th scope="col">ID</th><th scope="col">Data</th><th scope="col">Godzina</th>\
-                      <th scope="col">Lekarz</th><th scope="col">Pacjent</th><th scope="col">PESEL Pacjenta</th><th scope="col">Status</th>\
+                      <th scope="col">Lekarz</th><th scope="col">Pacjent</th><th scope="col">PESEL Pacjenta</th><th scope="col">Status</th><th></th>\
                       </tr></thead><tbody>';
 
         $.each(result.wizyty, function(index, wizyta) 
@@ -20,13 +19,13 @@ function getAppointments() {
             let data = moment(wizyta.data).format('DD.MM.YYYY');
             let godzina = moment(wizyta.data).format('HH:mm');
 
-            string += '<tr id="wizyta-' + wizyta.id +'"><th scope="row">' + wizyta.id +'</th>'
+            string += '<tr id="wizyta-' + wizyta.idWizyty +'"><th scope="row">' + wizyta.idWizyty +'</th>'
                      + '<td>' + data + '</td><td>' + godzina + '</td><td>' + result.lekarze[index].TytulNaukowy + ' '
                      + result.lekarze[index].Imie + ' ' + result.lekarze[index].Nazwisko + '</td>'
                      + '<td>' + result.pacjenci[index].Imie + ' ' + result.pacjenci[index].Nazwisko + '</td>'
                      + '<td>' + result.pacjenci[index].Pesel + '</td>';
 
-            string += '<td><div class="form-group"><select class="custom-select d-block w-100" id="status-wizyty-' + wizyta.id +'" required>';
+            string += '<td><div class="form-group"><select class="custom-select d-block w-100" id="status-wizyty-' + wizyta.idWizyty +'" disabled>';
 
             for (let [id, status] of Object.entries(result.statusy)) {
                 string += '<option value="' + id + '"';
@@ -37,9 +36,10 @@ function getAppointments() {
                 string += '>' + status + '</option>';
             }
 
-            string += '</select>'
-                    + '<a id="zmien-status-' + wizyta.id + '" href="/wizyta/zmien-status" class="btn btn-secondary zmien-status">Zmień status</a>'
-                    + '</div></td></tr>';
+            string += '</select></div></td>'
+                    + '<td>'
+                    + '<a id="zmien-status-' + wizyta.idWizyty + '" href="/wizyta/zmien-status" class="btn btn-outline-primary zmien-status select-disabled">Zmień status</a>'
+                    + '</td></tr>';
         });
 
         string += '</tbody></table>';
@@ -55,6 +55,17 @@ function initEvents() {
         e.preventDefault();
         let splitID = e.target.id.split('-');
         let ID = splitID[splitID.length-1];
+
+        if ($(e.target).hasClass('select-disabled')) {
+            $(e.target).removeClass('select-disabled').html('Zapisz status');
+            $('#wizyta-'+ID).addClass('select-active');
+            $('#status-wizyty-'+ID).prop('disabled', false);
+            return;
+        }
+        
+        $(e.target).addClass('select-disabled').html('Zmień status');
+        $('#wizyta-'+ID).removeClass('select-active');
+        $('#status-wizyty-'+ID).prop('disabled', 'disabled');        
 
         let status = $('tr#wizyta-' + ID + ' select').val();
 
@@ -72,5 +83,5 @@ function initEvents() {
         }).fail(function(jqXHR, textStatus) {
             console.log("fail: "+textStatus);
         });
-    })
+    });
 }
