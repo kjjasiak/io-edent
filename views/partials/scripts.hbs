@@ -5,3 +5,19 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
     crossorigin="anonymous"></script>
+<script type="text/javascript">
+    function showLoggedInUser(userID) {
+        $.ajax({
+            url: "/uzytkownik/zalogowany/" + userID + "/dane",
+            type: "GET",
+            dataType: 'json'
+        }).done(function (data) {
+            console.log(data);
+            if (data) {
+                $("#logged-in-user").html("Zalogowano jako: " + data[0].Imie + " " + data[0].Nazwisko + " (" + data[0].Rola + ", ID: " + data[0].ID + ", Login: " + data[0].Login + ")");
+            }
+        }).fail(function(jqXHR, textStatus) {
+            console.log("fail: "+textStatus);
+        });
+    }
+</script>

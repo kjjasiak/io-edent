@@ -53,6 +53,7 @@ function getAppointments() {
 function initEvents() {
     $(document).on('click', '.zmien-status', function(e) {
         e.preventDefault();
+        
         let splitID = e.target.id.split('-');
         let ID = splitID[splitID.length-1];
 

@@ -19,7 +19,7 @@ function getAppointments(idPacjenta) {
             let data = moment(wizyta.data).format('DD.MM.YYYY');
             let godzina = moment(wizyta.data).format('HH:mm');
 
-            string += '<tr id="wizyta-' + wizyta.id +'"><th scope="row">' + parseInt(index+1) +'</th>'
+            string += '<tr id="wizyta-' + wizyta.idWizyty +'"><th scope="row">' + parseInt(index+1) +'</th>'
                      + '<td>' + data + '</td><td>' + godzina + '</td><td>' + result.lekarze[index].TytulNaukowy + ' '
                      + result.lekarze[index].Imie + ' ' + result.lekarze[index].Nazwisko + '</td>'
                      + '<td class="cell-align-right status">' + wizyta.status + '</td><td class="cell-align-right">';
@@ -29,7 +29,7 @@ function getAppointments(idPacjenta) {
             if ((wizyta.status == "anulowana") || (wizyta.status == "zakończona"))
                 string += ' style="visibility: hidden;"';
             
-            string += ' id="anuluj-' + wizyta.id + '" href="panel/wizyty/pacjent/wizyta/' + wizyta.id + '/anuluj">Anuluj rezerwację</a>';
+            string += ' id="anuluj-' + wizyta.idWizyty + '" href="/panel/wizyty/pacjent/wizyta/' + wizyta.idWizyty + '/anuluj">Anuluj rezerwację</a>';
             string += '</td></tr>';
         });
 
@@ -44,6 +44,7 @@ function getAppointments(idPacjenta) {
 function initEvents() {
     $(document).on('click', 'a.anuluj', function(e) {
         e.preventDefault();
+        
         let splitID = e.target.id.split('-');
         let ID = splitID[splitID.length-1];
 

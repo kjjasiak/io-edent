@@ -8,15 +8,17 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/">Start <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/">Start</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="wizyty-dropdown" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Wizyty</a>
+                    aria-haspopup="true" aria-expanded="false">Wizyty (DEMO)</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="/rezerwuj-wizyte">Rezerwuj wizytę</a>
-                    <a class="dropdown-item" href="/panel/wizyty/pacjent">Lista wizyt - pacjent</a>
-                    <a class="dropdown-item" href="/panel/wizyty/pracownik">Lista wizyt - pracownik recepcji</a>
+                    <a class="dropdown-item" href="/rezerwuj-wizyte">Rezerwuj wizytę (pacjent 1)</a>
+                    <a class="dropdown-item" href="/rezerwuj-wizyte/pacjent-2">Rezerwuj wizytę (pacjent 2)</a>
+                    <a class="dropdown-item" href="/panel/wizyty/pacjent">Lista wizyt (pacjent 1)</a>
+                    <a class="dropdown-item" href="/panel/wizyty/pacjent-2">Lista wizyt (pacjent 2)</a>
+                    <a class="dropdown-item" href="/panel/wizyty/pracownik">Lista wizyt (pracownik recepcji)</a>
                 </div>
             </li>
             <li class="nav-item">
@@ -29,5 +31,6 @@
                 <a class="nav-link" href="/">Kontakt</a>
             </li>
         </ul>
+        <span class="navbar-text" id="logged-in-user"></span>
     </div>
 </nav>

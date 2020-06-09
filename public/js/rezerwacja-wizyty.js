@@ -14,7 +14,6 @@ function timeToDecimal(timeString) {
 
 function evalDayName(dayNumber) {
     let days = ['poniedziałki', 'wtorki', 'środy', 'czwartki', 'piątki', 'soboty', 'niedziele'];
-
     return days[dayNumber];
 }
 
@@ -33,8 +32,6 @@ function evalDateAndTime(dateToEval, openingTime, closingTime, timeSpanH, interv
 
 function initDatepickers(openingTime, closingTime, timeSpanH, intervalM) {
     let today = moment(new Date());
-    //let today = moment('06/06/2020 00:32');
-
     let date = evalDateAndTime(today, openingTime, closingTime, timeSpanH, intervalM);
 
     $('#datefrom').datetimepicker({
@@ -123,7 +120,6 @@ function validateSearchInput() {
     timeTo = moment(date.format('MM/DD/YYYY') + " " + timeTo.format('HH:mm'));
 
     let valid = true;
-
     let today = moment(new Date()).format('MM/DD/YYYY');
 
     if (date < moment(today + " 00:00")) {
@@ -182,7 +178,7 @@ function showAvailableAppointments(event) {
     let lekarz = $('#lekarz').val();
 
     $.ajax({
-        url: "/lekarze/"+lekarz+"/przyjecia",
+        url: "/lekarze/" + lekarz + "/przyjecia",
         type: "GET",
         dataType: 'json'  
     }).done(function (przyjecia) {
@@ -230,7 +226,6 @@ function showAvailableAppointments(event) {
             }
             
             let string = '<table class="table"><thead><tr> <th>Godzina</th><th>Data</th><th>Lekarz</th><th class="cell-align-right">Rezerwuj wizytę</th></tr></thead>';
-            
             let rowCounter = 1;
 
             appoint.forEach(timeslot => {
@@ -269,6 +264,7 @@ function initAppointmentsSearch() {
 
 function makeReservation(e, idPacjenta) {
     e.preventDefault();
+    
     let splitID = e.target.id.split('-');
     let ID = splitID[splitID.length-1];
 

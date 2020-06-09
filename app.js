@@ -31,9 +31,17 @@ app.get('/rezerwuj-wizyte', async (req, res) => {
     res.redirect('/');
 });
 
+app.get('/rezerwuj-wizyte/pacjent-2', async (req, res) => {
+    res.render('rezerwuj-wizyte-pacjent-2', {layout : 'main' });
+});
+
 app.get('/panel/wizyty/pacjent', async (req, res) => {
     res.render('panel-wizyty-pacjent', {layout : 'main' });
   });
+
+app.get('/panel/wizyty/pacjent-2', async (req, res) => {
+    res.render('panel-wizyty-pacjent-2', {layout : 'main' });
+});
 
   app.get('/panel/wizyty/pracownik', async (req, res) => {
     res.render('panel-wizyty-pracownik', {layout : 'main' });
@@ -41,6 +49,14 @@ app.get('/panel/wizyty/pacjent', async (req, res) => {
 
 app.get('/', async (req, res) => {
     res.render('rezerwuj-wizyte', {layout : 'main' });
+});
+
+app.get('/uzytkownik/zalogowany/:id/dane', async (req, res) => {
+    try {
+        const dane = await UsersClasses.Uzytkownik.pobierzDanePodstawowe(res, req.params.id);
+    } catch (err){
+        console.error(err);
+    }
 });
 
 app.get('/lekarze/specjalnosci', async (req, res) => {
@@ -135,5 +151,5 @@ app.get('/wizyty/wszystkie', async (req, res) => {
 });
 
 app.listen(port, host, () => {
-    console.log(`Running on http://${host}:${port}/`);
+    console.log(`Aplikacja dostepna pod adresem http://${host}:${port}/`);
 });

@@ -23,6 +23,22 @@ function Uzytkownik(idUzytkownika = null, login, haslo, imie, nazwisko, rola, te
     return self;
 }
 
+Uzytkownik.pobierzDanePodstawowe = async function pobierzDanePodstawowe(res, idUzytkownika) {
+    let conn;
+
+    try {
+        conn = await db.pool.getConnection();
+        const dane = await conn.query("SELECT ID, Login, Rola, Imie, Nazwisko FROM Uzytkownicy"
+                                   + " JOIN DaneUzytkownikow ON DaneUzytkownikow.IDUzytkownika = Uzytkownicy.ID"
+                                   + " WHERE ID = ?", [idUzytkownika]);
+        res.send(dane);
+    } catch (err){
+        console.error(err);
+    } finally {
+        if (conn) return conn.end();
+    }
+}
+
 Uzytkownik.dodaj = async function dodaj(login, haslo, imie, nazwisko, rola, telefon, email, ulica, nrDomuMieszkania, kodPocztowy, miasto) {
     // ...
 };
