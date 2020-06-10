@@ -14,16 +14,16 @@ CREATE TABLE IF NOT EXISTS Uzytkownicy(
 INSERT INTO Uzytkownicy
     (Login, Haslo, Email, Rola)
 VALUES
-    ('Smerfetka', '$smerfetka123', 'pacjent1@przyklad.com', 'pacjent'),
-    ('Papa_Smerf', 'papa123', 'pacjent2@przyklad.com', 'pacjent'),
-    ('Smerf_Maruda', 'XXmaruda123', 'lekarz1@przyklad.com', 'lekarz'),
-    ('Smerf_Osilek', '$osiłek123', 'lekarz2@przyklad.com', 'lekarz'),
-    ('Smerf_Wazniak', '@WaŻnIaK123', 'pacjent3@przyklad.com', 'pacjent'),
-    ('Smerf_Ciamajda', 'XXciamajda', 'pracownik1@przyklad.com', 'pracownik recepcji'),
-    ('Smerf_Lasuch', 'Ł@such123', 'pacjent4@przyklad.com', 'pacjent'),
-    ('Smerf_Pracus', 'PrAcUś123', 'lekarz3@przyklad.com', 'lekarz'),
-    ('Smerf_Lalus', '$lAlUś123', 'pacjent5@przyklad.com', 'pacjent'),
-    ('Smerf_Zgrywus', '@ZgRywUs123', 'pacjent6@przyklad.com', 'pacjent');
+    ('Smerfetka', '$2a$10$uXe45pfUmc0eOpSiqcjmoeFspIoEfDy5oVUEXuNsfMmg6UHanKtMG', 'pacjent1@przyklad.com', 'pacjent'),
+    ('Papa_Smerf', '$2a$10$vCTBefcjBtwGGVVQ3zdPnOFqcYzlgmeL9nv6RHY94QJPhdruqufRe', 'pacjent2@przyklad.com', 'pacjent'),
+    ('Smerf_Maruda', '$2a$10$V4qRCe1SnlM19Z5fAP7G2..KUZUZJvDJnnnwI9fgCcizkiy/6.Jie', 'lekarz1@przyklad.com', 'lekarz'),
+    ('Smerf_Osilek', '$2a$10$TepJ5Yr99ggedK4UWHLiD.I16woI8KLnEu995IDMEuX6iwU4nO/JW', 'lekarz2@przyklad.com', 'lekarz'),
+    ('Smerf_Wazniak', '$2a$10$e7cYX8DPAGZrG9kWSdBo4u5b1nhqMttuVz/A16W949.QrFCx5jQ6e', 'pacjent3@przyklad.com', 'pacjent'),
+    ('Smerf_Ciamajda', '$2a$10$m2kkMEPqNuupm8l..RtptOc3ugE5BLkgMFcgR02cE8QTSZ.UBrC4G', 'pracownik1@przyklad.com', 'pracownik recepcji'),
+    ('Smerf_Lasuch', '$2a$10$Zx2QEuQUfQs6GZijxD5qgOJc5e/Ij7MOlN3rNklGupQHh/O2XpQM6', 'pacjent4@przyklad.com', 'pacjent'),
+    ('Smerf_Pracus', '$2a$10$aipUFaAb4MIQMe3e4pY78e7F5uVEziVYv5ADpZeqlKm.39Skfj3fK', 'lekarz3@przyklad.com', 'lekarz'),
+    ('Smerf_Lalus', '$2a$10$Oi8cb.mlTH.jqVzdfvIqz.WZNmzUVwD7b4TGGnnjvjPx2LrZXqpTq', 'pacjent5@przyklad.com', 'pacjent'),
+    ('Smerf_Zgrywus', '$2a$10$6A3SFkcNFu5W8sGd2BeReej/OtauaCHo2U6ew5uCZ7PohGZ0g9NvC', 'pacjent6@przyklad.com', 'pacjent');
 
 CREATE TABLE IF NOT EXISTS DaneUzytkownikow(
     IDUzytkownika INT(11) NOT NULL,

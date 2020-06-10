@@ -71,7 +71,7 @@ function initEvents() {
         let status = $('tr#wizyta-' + ID + ' select').val();
 
         $.ajax({
-            url: "/wizyty/" + ID + "/zmien-status",
+            url: '/panel/wizyty/pracownik/wizyta/' + ID + '/zmien-status',
             type: "GET",
             data: {
                 'nowyStatus': status

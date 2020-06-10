@@ -240,12 +240,24 @@ function PracownikRecepcji(login, haslo, imie, nazwisko, rola, telefon, email, u
     let self = Uzytkownik.call(this, login, haslo, imie, nazwisko, rola, telefon, email, ulica, nrDomuMieszkania, kodPocztowy, miasto);
 }
 
-PracownikRecepcji.anulujWizyte = async function anulujWizyte() {
-    // ...
+PracownikRecepcji.anulujWizyte = async function anulujWizyte(res, idWizyty) {
+    try {
+        const rows = await Classes.Wizyta.zmienStatus(res, "A", idWizyty);
+        //res.send(wizyta);
+    } catch (err){
+        //res.send(false);
+        console.error(err);
+    }
 };
 
-PracownikRecepcji.potwierdzWizyte = async function potwierdzWizyte() {
-    // ...
+PracownikRecepcji.potwierdzWizyte = async function potwierdzWizyte(res, idWizyty) {
+    try {
+        const rows = await Classes.Wizyta.zmienStatus(res, "P", idWizyty);
+        //res.send(wizyta);
+    } catch (err){
+        //res.send(false);
+        console.error(err);
+    }
 };
 
 PracownikRecepcji.zalozHistorieChoroby = async function zalozHistorieChoroby() {

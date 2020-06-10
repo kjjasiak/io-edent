@@ -115,15 +115,6 @@ app.get('/wizyty/pacjent/:id', async (req, res) => {
     }
 });
 
-app.get('/wizyty/:id/zmien-status', async (req, res) => {
-    try {
-        const rows = await Classes.Wizyta.zmienStatus(res, req.query.nowyStatus, req.params.id);
-    } catch (err){
-        console.error(err);
-        res.send(false);
-    }
-});
-
 app.get('/panel/wizyty/pacjent/wizyta/:id/anuluj', async (req, res) => {
     try {
         const rows = await UsersClasses.Pacjent.anulujWizyte(res, req.params.id);
@@ -133,9 +124,9 @@ app.get('/panel/wizyty/pacjent/wizyta/:id/anuluj', async (req, res) => {
     }
 });
 
-app.get('/wizyty/:id/anuluj', async (req, res) => {
+app.get('/panel/wizyty/pracownik/wizyta/:id/zmien-status', async (req, res) => {
     try {
-        const rows = await Classes.Wizyta.zmienStatus(res, "A", req.params.id);
+        const rows = await Classes.Wizyta.zmienStatus(res, req.query.nowyStatus, req.params.id);
     } catch (err){
         console.error(err);
         res.send(false);
