@@ -1,4 +1,4 @@
-CREATE DATABASE edent;
+CREATE DATABASE edent COLLATE 'utf8mb4_unicode_ci';
 
 USE edent;
 
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS Skierowania(
     IDPodmiotu INT(11) NOT NULL,
     DataWystawienia DATE NOT NULL,
     Rodzaj VARCHAR(255) NOT NULL,
-    Tresc VARCHAR(65535),
+    Tresc VARCHAR(50000),
     PRIMARY KEY (ID),
     FOREIGN KEY (NrPWZLekarza) REFERENCES Lekarze(NumerPWZ),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS WiadomosciCzatow(
     ID INT(11) NOT NULL AUTO_INCREMENT,
     IDCzatu INT(11) NOT NULL,
     Temat VARCHAR(255) NOT NULL,
-    Tresc VARCHAR(65535) NOT NULL,
+    Tresc VARCHAR(50000) NOT NULL,
     Status VARCHAR(30) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDCzatu) REFERENCES Czaty(ID)
@@ -239,7 +239,7 @@ CREATE TABLE IF NOT EXISTS FormularzeKontaktowe(
     ID INT(11) NOT NULL AUTO_INCREMENT,
     IDPacjenta INT(11) NOT NULL,
     Temat VARCHAR(255) NOT NULL,
-    Tresc VARCHAR(65535) NOT NULL,
+    Tresc VARCHAR(50000) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID)
 );
@@ -271,7 +271,7 @@ CREATE TABLE IF NOT EXISTS WpisyHistoriiChorob(
     ID INT(11) NOT NULL AUTO_INCREMENT,
     IDHistoriiChoroby INT(11) NOT NULL,
     Data DATE NOT NULL,
-    Tresc VARCHAR(65535) NOT NULL,
+    Tresc VARCHAR(50000) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDHistoriiChoroby) REFERENCES HistorieChorob(ID)
 );
@@ -332,7 +332,7 @@ CREATE TABLE IF NOT EXISTS WnioskiSkierowanie(
     ID INT(11) NOT NULL AUTO_INCREMENT,
     IDPacjenta INT(11) NOT NULL,
     TypUslugi VARCHAR(255) NOT NULL,
-    Szczegoly VARCHAR(65535),
+    Szczegoly VARCHAR(50000),
     PRIMARY KEY (ID),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID)
 );
