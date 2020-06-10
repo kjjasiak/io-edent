@@ -1,3 +1,9 @@
+CREATE DATABASE edent 
+    CHARACTER SET = 'utf8mb4'
+    COLLATE = 'utf8mb4_unicode_ci';
+
+USE edent;
+
 CREATE TABLE IF NOT EXISTS Uzytkownicy(
     ID INT(11) NOT NULL AUTO_INCREMENT,
     Login VARCHAR(30) NOT NULL,
