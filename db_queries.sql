@@ -1,9 +1,3 @@
-CREATE DATABASE edent 
-    CHARACTER SET = 'utf8'
-    COLLATE = 'utf8mb4_unicode_ci';
-
-USE edent;
-
 CREATE TABLE IF NOT EXISTS Uzytkownicy(
     ID INT(11) NOT NULL AUTO_INCREMENT,
     Login VARCHAR(30) NOT NULL,
@@ -11,7 +5,8 @@ CREATE TABLE IF NOT EXISTS Uzytkownicy(
     Email VARCHAR(70) NOT NULL,
     Rola VARCHAR(50) NOT NULL,
     PRIMARY KEY (ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO Uzytkownicy
     (Login, Haslo, Email, Rola)
@@ -38,7 +33,8 @@ CREATE TABLE IF NOT EXISTS DaneUzytkownikow(
     Miasto VARCHAR(50) NOT NULL,
     PRIMARY KEY (IDUzytkownika),
     FOREIGN KEY (IDUzytkownika) REFERENCES Uzytkownicy(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO DaneUzytkownikow
     (IDUzytkownika, Imie, Nazwisko, Telefon, Ulica, NrDomuMieszkania, KodPocztowy, Miasto)
@@ -62,7 +58,8 @@ CREATE TABLE IF NOT EXISTS Pacjenci(
     IDUzytkownika INT(11) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDUzytkownika) REFERENCES Uzytkownicy(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO Pacjenci
     (Pesel, DataUrodzenia, OddzialNFZ, IDUzytkownika)
@@ -83,7 +80,8 @@ CREATE TABLE IF NOT EXISTS Lekarze(
     GodzinyPrzyjec VARCHAR(255),
     PRIMARY KEY (NumerPWZ),
     FOREIGN KEY (IDUzytkownika) REFERENCES Uzytkownicy(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO Lekarze
     (NumerPWZ, TytulNaukowy, Specjalnosc, IDUzytkownika, DniPrzyjec, GodzinyPrzyjec)
@@ -100,7 +98,8 @@ CREATE TABLE IF NOT EXISTS PodmiotyMedyczne(
     Telefon VARCHAR(15) NOT NULL,
     Typ VARCHAR(255),
     PRIMARY KEY (ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO PodmiotyMedyczne
     (NrWpisuRPWDL, Nazwa, Adres, Telefon, Typ)
@@ -120,7 +119,8 @@ CREATE TABLE IF NOT EXISTS Wizyty(
     PRIMARY KEY (ID),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
     FOREIGN KEY (PWZLekarza) REFERENCES Lekarze(NumerPWZ)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO Wizyty
     (IDPacjenta, PWZLekarza, Data, Typ, Status)
@@ -147,7 +147,8 @@ CREATE TABLE IF NOT EXISTS Skierowania(
     FOREIGN KEY (NrPWZLekarza) REFERENCES Lekarze(NumerPWZ),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
     FOREIGN KEY (IDPodmiotu) REFERENCES PodmiotyMedyczne(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO Skierowania
     (NrPWZLekarza, IDPacjenta, IDPodmiotu, DataWystawienia, Rodzaj, Tresc)
@@ -171,7 +172,8 @@ CREATE TABLE IF NOT EXISTS Recepty(
     FOREIGN KEY (NrPWZLekarza) REFERENCES Lekarze(NumerPWZ),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
     FOREIGN KEY (IDPodmiotu) REFERENCES PodmiotyMedyczne(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO Recepty
     (NrPWZLekarza, IDPacjenta, IDPodmiotu, DataWystawienia, UprawnieniaDodatkowe, DataRealizacjiOdDnia)
@@ -192,7 +194,8 @@ CREATE TABLE IF NOT EXISTS PozycjeRecept(
     Odplatnosc VARCHAR(5) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDRecepty) REFERENCES Recepty(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO PozycjeRecept
     (IDRecepty, Nazwa, Ilosc, Dawkowanie, Odplatnosc)
@@ -211,7 +214,8 @@ CREATE TABLE IF NOT EXISTS Czaty(
     PRIMARY KEY (ID),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID),
     FOREIGN KEY (IDPracownika) REFERENCES Uzytkownicy(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO Czaty
     (IDPacjenta, IDPracownika)
@@ -228,7 +232,8 @@ CREATE TABLE IF NOT EXISTS WiadomosciCzatow(
     Status VARCHAR(30) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDCzatu) REFERENCES Czaty(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO WiadomosciCzatow
     (IDCzatu, Temat, Tresc, Status)
@@ -244,7 +249,8 @@ CREATE TABLE IF NOT EXISTS FormularzeKontaktowe(
     Tresc TEXT NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO FormularzeKontaktowe
     (IDPacjenta, Temat, Tresc)
@@ -257,7 +263,8 @@ CREATE TABLE IF NOT EXISTS HistorieChorob(
     IDPacjenta INT(11) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO HistorieChorob
     (IDPacjenta)
@@ -276,7 +283,8 @@ CREATE TABLE IF NOT EXISTS WpisyHistoriiChorob(
     Tresc TEXT NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDHistoriiChoroby) REFERENCES HistorieChorob(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO WpisyHistoriiChorob
     (IDHistoriiChoroby, Data, Tresc)
@@ -293,7 +301,8 @@ CREATE TABLE IF NOT EXISTS KopieZapasowe(
     Data DATE NOT NULL,
     SciezkaDoKopii VARCHAR(255) NOT NULL,
     PRIMARY KEY (ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO KopieZapasowe
     (Data, SciezkaDoKopii)
@@ -306,7 +315,8 @@ CREATE TABLE IF NOT EXISTS WnioskiRecepta(
     IDPacjenta INT(11) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO WnioskiRecepta
     (IDPacjenta)
@@ -321,7 +331,8 @@ CREATE TABLE IF NOT EXISTS PozycjeWnioskowRecepty(
     Ilosc INT(3) NOT NULL,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDWniosku) REFERENCES WnioskiRecepta(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO PozycjeWnioskowRecepty
     (IDWniosku, Nazwa, Ilosc)
@@ -337,7 +348,8 @@ CREATE TABLE IF NOT EXISTS WnioskiSkierowanie(
     Szczegoly TEXT,
     PRIMARY KEY (ID),
     FOREIGN KEY (IDPacjenta) REFERENCES Pacjenci(ID)
-);
+) CHARACTER SET 'utf8mb4' 
+  COLLATE 'utf8mb4_unicode_ci';
 
 INSERT INTO WnioskiSkierowanie
     (IDPacjenta, TypUslugi, Szczegoly)
