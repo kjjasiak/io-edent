@@ -94,7 +94,6 @@ Wizyta.pobierzZarezerwowaneWizyty = async function pobierzZarezerwowaneWizyty(re
 
     try {
         conn = await db.pool.getConnection();
-        //const rows = await conn.query('SELECT Data FROM Wizyty WHERE Data LIKE "%?%" AND NOT Status = "anulowana"', [data]);
         const rows = await conn.query('SELECT Data FROM Wizyty WHERE Data LIKE "%' + data + '%" AND NOT Status = "anulowana"');
         res.send(rows);
     } catch (err){

@@ -65,9 +65,7 @@ function Pacjent(idPacjenta = null, login, haslo, imie, nazwisko, rola, telefon,
 Pacjent.rezerwujWizyte = async function utworzWizyte(res, IDPacjenta, PWZLekarza, Data, DataJS, Typ) {
     try {
         const wizyta = await Classes.Wizyta.utworzWizyte(res, IDPacjenta, PWZLekarza, Data, DataJS, Typ);
-        //res.send(wizyta);
     } catch (err){
-        //res.send(false);
         console.error(err);
     }
 };
@@ -75,9 +73,7 @@ Pacjent.rezerwujWizyte = async function utworzWizyte(res, IDPacjenta, PWZLekarza
 Pacjent.anulujWizyte = async function anulujWizyte(res, idWizyty) {
     try {
         const rows = await Classes.Wizyta.zmienStatus(res, "A", idWizyty);
-        //res.send(wizyta);
     } catch (err){
-        //res.send(false);
         console.error(err);
     }
 };
@@ -243,9 +239,7 @@ function PracownikRecepcji(login, haslo, imie, nazwisko, rola, telefon, email, u
 PracownikRecepcji.anulujWizyte = async function anulujWizyte(res, idWizyty) {
     try {
         const rows = await Classes.Wizyta.zmienStatus(res, "A", idWizyty);
-        //res.send(wizyta);
     } catch (err){
-        //res.send(false);
         console.error(err);
     }
 };
@@ -253,9 +247,7 @@ PracownikRecepcji.anulujWizyte = async function anulujWizyte(res, idWizyty) {
 PracownikRecepcji.potwierdzWizyte = async function potwierdzWizyte(res, idWizyty) {
     try {
         const rows = await Classes.Wizyta.zmienStatus(res, "P", idWizyty);
-        //res.send(wizyta);
     } catch (err){
-        //res.send(false);
         console.error(err);
     }
 };
