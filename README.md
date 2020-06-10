@@ -5,7 +5,7 @@
 3. Pobrać i zainstalować MariaDB 10.4.11 (https://downloads.mariadb.org/interstitial/mariadb-10.4.11/winx64-packages/mariadb-10.4.11-winx64.msi/from/http%3A//ftp.hosteurope.de/mirror/archive.mariadb.org/) z domyślną konfiguracją. Podczas instalacji jest możliwość zmiany domyślnego hasła dla użytkownika 'root' - jest to opcjonalne.
 4. Uruchomić MySQL Client (MariaDB 10.4 (x64)).
 5. Podać hasło użytkownika 'root' (jeśli nie zmienialiśmy hasła przy instalacji to domyślnie jest ono puste - wystarczy wtedy wcisnąć Enter).
-6. W konsoli MariaDB wkleić zawartość pliku db_queries.sql i zatwierdzić klawiszem Enter.
+6. W konsoli MariaDB wkleić zawartość pliku db_queries.txt i zatwierdzić klawiszem Enter.
 7. W głównym folderze z implementacją odszukać plik db.js, a następnie podmienić w nim wartości **'host'**, **'port'**, **'user'** oraz **'password'** na odpowiadające posiadanej konfiguracji bazy danych, po czym zapisać plik.
 7a. (opcjonalnie) W pliku app.js zmienić wartość zmiennej host oraz port na żądane wartości (wartości te będą potrzebne przy uruchomieniu serwera aplikacji).
 8. Uruchomić linię komend lub inny preferowany terminal, przejść w nim do głównego folderu z implementacją.
