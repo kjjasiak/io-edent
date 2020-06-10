@@ -1,4 +1,6 @@
-CREATE DATABASE edent COLLATE 'utf8mb4_unicode_ci';
+CREATE DATABASE edent 
+    CHARACTER SET = 'utf8'
+    COLLATE = 'utf8mb4_unicode_ci';
 
 USE edent;
 
