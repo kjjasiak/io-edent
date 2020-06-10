@@ -1,8 +1,8 @@
 # io-edent
 ## Instalacja
 1. Pobrać w formacie ZIP i wypakować lub sklonować repozytorium.
-2. Zainstalować NodeJS 12.18.0 (https://nodejs.org/en/download/) (testowano na wersji 64-bitowej).
-3. MariaDB (uzupełnić!)
+2. Pobrać i zainstalować NodeJS 12.18.0 (https://nodejs.org/en/download/) z domyślną konfiguracją (testowano na wersji 64-bitowej).
+3. Pobrać i zainstalować MariaDB 10.4.11 (https://downloads.mariadb.org/interstitial/mariadb-10.4.11/winx64-packages/mariadb-10.4.11-winx64.msi/from/http%3A//ftp.hosteurope.de/mirror/archive.mariadb.org/)
 4. konsola MariaDB + query (uzupełnić!)
 5. W głównym folderze z implementacją odszukać plik db.js, a następnie podmienić w nim wartości **'host'**, **'port'**, **'database'**, **'user'** oraz **'password'** na odpowiadające posiadanej konfiguracji bazy danych, po czym zapisać plik.
 5a. (opcjonalnie) W pliku app.js zmienić wartość zmiennej host oraz port na żądane wartości (wartości te będą potrzebne przy uruchomieniu serwera aplikacji).
