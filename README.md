@@ -1,6 +1,6 @@
 # io-edent
 ## Instalacja
-1. Pobrać w formacie ZIP i wypakować lub sklonować repozytorium.
+1. Pobrać w formacie ZIP i wypakować (może to potrwać nawet do kilku minut) lub sklonować repozytorium.
 2. Pobrać i zainstalować NodeJS 12.18.0 (https://nodejs.org/en/download/) z domyślną konfiguracją (testowano na wersji 64-bitowej).
 3. Pobrać i zainstalować MariaDB 10.4.11 (https://downloads.mariadb.org/interstitial/mariadb-10.4.11/winx64-packages/mariadb-10.4.11-winx64.msi/from/http%3A//ftp.hosteurope.de/mirror/archive.mariadb.org/) z domyślną konfiguracją. Podczas instalacji jest możliwość zmiany domyślnego hasła dla użytkownika 'root' - jest to opcjonalne.
 4. Uruchomić MySQL Client (MariaDB 10.4 (x64)).
